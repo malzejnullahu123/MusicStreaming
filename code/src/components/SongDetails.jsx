@@ -4,15 +4,12 @@ import { DetailsHeader, Error, Loader, RelatedSongs } from "../components";
 
 import { setActiveSong, playPause } from "../redux/features/playerSlice";
 
-// Replace this with your PostgreSQL data fetching logic
 const useGetSongDetailsQuery = (songid) => {
-  const songData = {}; // Placeholder for static data or data fetching from PostgreSQL
+  const songData = {}; 
   return { data: songData, isFetching: false };
 };
 
-// Replace this with your PostgreSQL data fetching logic
 const useGetSongRelatedQuery = (songid) => {
-  const data = []; // Placeholder for static data or data fetching from PostgreSQL
   return { data, isFetching: false, error: null };
 };
 
@@ -40,26 +37,16 @@ const SongDetails = () => {
     <div className="flex flex-col">
       <DetailsHeader artistId="" songData={songData} />
 
-      <div className="mb-10">
-        <h2 className="text-white text-3xl font-bold">Lyrics: </h2>
-        {songData?.sections?.[1]?.type === "LYRICS" ? (
-          songData?.sections?.[1]?.text?.map((Line, i) => (
-            <p key={i} className="text-gray-400 text-base my-1">
-              {Line}
-            </p>
-          ))
-        ) : (
-          <p>Sorry, no lyrics found!</p>
-        )}
-        <div className="mt-5" />
+      <div className="mt-5">
+        <RelatedSongs
+          data={data}
+          isPlaying={isPlaying}
+          activeSong={activeSong}
+          handlePauseClick={handlePauseClick}
+          handlePlayClick={handlePlayClick}
+          artistId=""
+        />
       </div>
-      <RelatedSongs
-        data={data}
-        isPlaying={isPlaying}
-        activeSong={activeSong}
-        handlePauseClick={handlePauseClick}
-        handlePlayClick={handlePlayClick}
-      />
     </div>
   );
 };
