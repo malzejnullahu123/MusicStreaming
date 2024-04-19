@@ -20,6 +20,7 @@ export const genres = [
 export const links = [
   { name: 'Discover', to: '/', icon: HiOutlineHome },
   { name: 'Albums', to: '/Albums', icon: HiOutlinePhotograph },
-  { name: 'Playlist', to: '/top-artists', icon: HiOutlineUserGroup },
-  { name: 'Top Charts', to: '/top-charts', icon: HiOutlineHashtag },
+  { name: 'Playlist', to: '/playlist', icon: HiOutlineUserGroup },
+  { name: 'Recently Listened', to: '/recenlty-listened', icon: HiOutlineHashtag },
+  { name: 'My Profile', to: '/profile', icon: HiOutlineHashtag },
 ];
