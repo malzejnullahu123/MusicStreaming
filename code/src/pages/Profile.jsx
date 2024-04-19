@@ -1,3 +1,5 @@
-const Profile = () => <div>Profile jkansdjn</div>;
-
+const Profile = () => {
+return(
+<div>Profile view</div> );
+}
 export default Profile;
