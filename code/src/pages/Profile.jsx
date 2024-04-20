@@ -1,15 +1,30 @@
 import { Error, Loader, SongCard } from '../components';
 import { genres } from '../assets/constants';
 import { NavLink } from 'react-router-dom';
-import {Playlist} from '../pages';
+// import {Playlist} from '../pages';
 // import {profilePicture} from '../assets';
 import { FiLogOut, FiUpload } from 'react-icons/fi';
+import { LogoutPopup } from '../components';
+
+import React, { useState } from 'react';
+
 
 
 const Profile = () => {
     const profilePicture = '../assets/profilePicture.svg';
     const username = 'Username';
-   
+    const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+    const handleLogout = () => {
+      // Perform logout logic here
+      console.log('Logging out...');
+      setShowLogoutPopup(false);
+    }
+    const toggleLogoutPopup = () => {
+      setShowLogoutPopup(!showLogoutPopup);
+      console.log('Toggle logout popup');
+    };
+    
+  
     const color =" [#601a56]";
 return(     
 <div>  
@@ -21,14 +36,17 @@ return(
             <NavLink to="../playlist" className="text-sm text-gray-600">My playlists</NavLink>
    </div>
    </div>
-   <FiLogOut className="text-gray-600 w-6 h-6 cursor-pointer" /> 
+   <button className="flex items-center ml-auto">
+   <FiLogOut className="text-gray-600 w-6 h-6 cursor-pointer" onClick={toggleLogoutPopup} />
+
+   </button>
    </div>  
 <br/>
         <div className="border border-gray-300 p-4 rounded-lg">
 <h2>Your uploads: </h2>
 <button className="flex items-center ml-auto">
-                <FiUpload className="text-white w-6 h-6 cursor-pointer" /> {/* Add icon */}
-                <p className="text-sm text-white ml-2">New Upload</p> {/* Text under the icon */}
+                <FiUpload className="text-white w-6 h-6 cursor-pointer" /> 
+                <p className="text-sm text-white ml-2">New Upload</p> 
             </button>
             <br/>
     <div className="flex flex-wrap sm:justify-start justify-center gap-8">
@@ -38,6 +56,7 @@ return(
   </div>
  
   </div>  
+  <LogoutPopup isOpen={showLogoutPopup} onClose={toggleLogoutPopup} onLogout={handleLogout} />
   </div>
  
 );
