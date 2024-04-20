@@ -1,10 +1,10 @@
-import { Error, Loader, SongCard } from '../components';
+import { Error, Loader, SongCard, NewUploadPopup, LogoutPopup } from '../components';
 import { genres } from '../assets/constants';
 import { NavLink } from 'react-router-dom';
 // import {Playlist} from '../pages';
 // import {profilePicture} from '../assets';
 import { FiLogOut, FiUpload } from 'react-icons/fi';
-import { LogoutPopup } from '../components';
+
 
 import React, { useState } from 'react';
 
@@ -14,6 +14,7 @@ const Profile = () => {
     const profilePicture = '../assets/profilePicture.svg';
     const username = 'Username';
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+    const [showNewUploadPopup, setShowNewUploadPopup] = useState(false);
     const handleLogout = () => {
       // Perform logout logic here
       console.log('Logging out...');
@@ -22,6 +23,9 @@ const Profile = () => {
     const toggleLogoutPopup = () => {
       setShowLogoutPopup(!showLogoutPopup);
       console.log('Toggle logout popup');
+    };
+    const toggleNewUploadPopup = () => {
+      setShowNewUploadPopup(!showNewUploadPopup);
     };
     
   
@@ -44,7 +48,7 @@ return(
 <br/>
         <div className="border border-gray-300 p-4 rounded-lg">
 <h2>Your uploads: </h2>
-<button className="flex items-center ml-auto">
+<button className="flex items-center ml-auto" onClick={toggleNewUploadPopup}>
                 <FiUpload className="text-white w-6 h-6 cursor-pointer" /> 
                 <p className="text-sm text-white ml-2">New Upload</p> 
             </button>
@@ -57,6 +61,7 @@ return(
  
   </div>  
   <LogoutPopup isOpen={showLogoutPopup} onClose={toggleLogoutPopup} onLogout={handleLogout} />
+  <NewUploadPopup isOpen={showNewUploadPopup} onClose={toggleNewUploadPopup} />
   </div>
  
 );

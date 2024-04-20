@@ -9,7 +9,7 @@ import RelatedSongs from './RelatedSongs';
 import LogoutPopup from './LogoutPopup';
 import Loader from './Loader';
 import Error from './Error';
-
+import NewUploadPopup from './NewUploadPopup';
 export {
   TopPlay,
   Sidebar,
@@ -22,4 +22,5 @@ export {
  LogoutPopup,
   Loader,
   Error,
+  NewUploadPopup
 };
