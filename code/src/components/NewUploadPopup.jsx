@@ -42,7 +42,7 @@ const NewUploadPopup = ({ isOpen, onClose }) => {
         </div>
         <div className="flex justify-center">
           <button onClick={onClose} className="mr-4 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Cancel</button>
-          <button onClick={onClose} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Upload</button>
+          <button onClick={onClose} className="px-4 py-2 bg-[#601a56] text-white rounded hover:bg-[#601a56]s">Upload</button>
         </div>
       </div>
     </div>

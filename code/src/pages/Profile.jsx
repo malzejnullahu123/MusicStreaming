@@ -47,7 +47,7 @@ return(
    </div>  
 <br/>
         <div className="border border-gray-300 p-4 rounded-lg">
-<h2>Your uploads: </h2>
+        <p className="text-sm text-white ml-2">YOUR UPLOADS</p> 
 <button className="flex items-center ml-auto" onClick={toggleNewUploadPopup}>
                 <FiUpload className="text-white w-6 h-6 cursor-pointer" /> 
                 <p className="text-sm text-white ml-2">New Upload</p> 

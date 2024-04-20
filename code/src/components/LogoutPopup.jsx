@@ -8,7 +8,7 @@ const LogoutPopup = ({ isOpen, onClose, onLogout }) => {
       <div className="bg-white p-6 rounded-lg shadow-md">
         <p>Are you sure you want to log out?</p>
         <div className="flex justify-center mt-4">
-          <button onClick={onLogout} className="mr-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Yes</button>
+          <button onClick={onLogout} className="mr-4 px-4 py-2 bg-[#601a56] text-white rounded hover:bg-[#601a56]">Yes</button>
           <button onClick={onClose} className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">No</button>
         </div>
       </div>
