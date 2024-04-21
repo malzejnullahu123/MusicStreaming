@@ -28,7 +28,7 @@ const SongCard = ({
       </div>
       <img
         alt="song_img"
-        src={song.images.coverart}
+        // src={song.images.coverart}
         className="w-full h-full rounded-lg"
       />
     </div>
