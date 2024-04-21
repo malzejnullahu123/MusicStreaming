@@ -64,7 +64,7 @@ const Discover = () => {
           placeholder="Search Songs"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="text-base p-2"
+          className="text-base p-2 rounded-full"
         />
       </div>
 
