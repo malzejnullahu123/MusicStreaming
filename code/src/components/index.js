@@ -10,6 +10,7 @@ import LogoutPopup from './LogoutPopup';
 import Loader from './Loader';
 import Error from './Error';
 import NewUploadPopup from './NewUploadPopup';
+import ProfileSettings from './ProfileSettings';
 export {
   TopPlay,
   Sidebar,
@@ -22,5 +23,6 @@ export {
  LogoutPopup,
   Loader,
   Error,
-  NewUploadPopup
+  NewUploadPopup,
+  ProfileSettings
 };

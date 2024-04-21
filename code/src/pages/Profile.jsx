@@ -1,4 +1,4 @@
-import { Error, Loader, SongCard, NewUploadPopup, LogoutPopup } from '../components';
+import { Error, Loader, SongCard, NewUploadPopup, LogoutPopup, ProfileSettings } from '../components';
 import { genres } from '../assets/constants';
 import { NavLink } from 'react-router-dom';
 // import {Playlist} from '../pages';
@@ -15,6 +15,7 @@ const Profile = () => {
     const username = 'Username';
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
     const [showNewUploadPopup, setShowNewUploadPopup] = useState(false);
+    const [showProfileSettings, setShowProfileSettings] = useState(false);
     const handleLogout = () => {
       // Perform logout logic here
       console.log('Logging out...');
@@ -27,24 +28,33 @@ const Profile = () => {
     const toggleNewUploadPopup = () => {
       setShowNewUploadPopup(!showNewUploadPopup);
     };
+
+    const toggleProfileSettings = () => {
+      setShowProfileSettings(!showProfileSettings);
+    };
     
   
     const color =" [#601a56]";
 return(     
 <div>  
 <div className="bg-gray-100 border border-gray-300 p-4 rounded-lg shadow-md flex items-center justify-between">
+<button  onClick={toggleProfileSettings}>
    <div className="flex items-center space-x-4">
     <img src={profilePicture} alt="Profile" className="w-12 h-12 rounded-full" />
       <div>
          <h2 className="text-lg font-semibold text-gray-800">{username}</h2>
-            <NavLink to="../playlist" className="text-sm text-gray-600">My playlists</NavLink>
+        
+            {/* <NavLink to="../playlist" className="text-sm text-gray-600">My playlists</NavLink> */}
+            <h6 className="text-sm text-gray-800">6 followers 5 following</h6> <NavLink to="../playlist" className="text-sm text-gray-600">My playlists</NavLink> 
    </div>
    </div>
+   </button>
    <button className="flex items-center ml-auto">
    <FiLogOut className="text-gray-600 w-6 h-6 cursor-pointer" onClick={toggleLogoutPopup} />
 
    </button>
-   </div>  
+   </div> 
+  
 <br/>
         <div className="border border-gray-300 p-4 rounded-lg">
         <p className="text-sm text-white ml-2">YOUR UPLOADS</p> 
@@ -62,6 +72,7 @@ return(
   </div>  
   <LogoutPopup isOpen={showLogoutPopup} onClose={toggleLogoutPopup} onLogout={handleLogout} />
   <NewUploadPopup isOpen={showNewUploadPopup} onClose={toggleNewUploadPopup} />
+  <ProfileSettings isOpen={showProfileSettings} onClose={toggleProfileSettings} />
   </div>
  
 );
