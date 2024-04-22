@@ -6,7 +6,7 @@ import axios from 'axios';
 // import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 // import { connect } from 'react-redux'
-const LoginPage = () => {
+const Login = () => {
     const [pass, setPass] = useState('');
     const [username, setUsername] = useState('');
 
@@ -77,4 +77,4 @@ const LoginPage = () => {
         </div>
     )
 }
-export default LoginPage;
+export default Login;

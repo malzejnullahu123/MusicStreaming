@@ -12,6 +12,8 @@ import Error from './Error';
 import NewUploadPopup from './NewUploadPopup';
 import ProfileSettings from './ProfileSettings';
 import FollowPopup from './FollowPopup';
+import Login from './Login';
+import Signup from './Signup';
 export {
   TopPlay,
   Sidebar,
@@ -26,5 +28,7 @@ export {
   Error,
   NewUploadPopup,
   ProfileSettings,
-  FollowPopup
+  FollowPopup,
+  Login,
+  Signup
 };

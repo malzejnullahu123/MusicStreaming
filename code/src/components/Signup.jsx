@@ -6,7 +6,7 @@ import axios from 'axios';
 // import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 // import { connect } from 'react-redux'
-const SignUp = () => {
+const Signup = () => {
   const [dataToSave, setDataToSave] = useState([]);
   function handleRegister(e) {
       e.preventDefault()
@@ -69,4 +69,4 @@ const SignUp = () => {
         </div>
     )
 }
-export default SignUp;
+export default Signup;
