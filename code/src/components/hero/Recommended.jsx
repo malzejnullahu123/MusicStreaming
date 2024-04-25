@@ -6,7 +6,7 @@ export const Recommended = () => {
   return (
     <>
       <section className='hero mt-7 pb-32'>
-        <Title title='Recommended for you' />
+        <Title title='Recommand for you' />
 
             {/* <Card_sm cover={item.cover} name={item.name} tag={item.tag} i={i} /> */}
 

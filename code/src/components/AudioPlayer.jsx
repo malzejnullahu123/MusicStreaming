@@ -1,27 +1,6 @@
 import React, { useState } from "react";
 
 const AudioPlayer = ({ embedIMGLink, title, artistName, embedLink }) => {
-  const [isPlaying, setPlaying] = useState(false);
-
-  // useEffect(() => {
-  //   const audio = document.getElementById("audio");
-  //   audio.addEventListener("ended", onEnded);
-  //   return () => {
-  //     audio.removeEventListener("ended", onEnded);
-  //   };
-  // }, [onEnded]);
-
-  // const handlePlayClick = () => {
-  //   const audio = document.getElementById("audio");
-  //   if (audio.src !== embedLink) {
-  //     audio.src = embedLink;
-  //   }
-  //   setPlaying(!isPlaying);
-  // };
-
-  // const handleEnded = () => {
-  //   setPlaying(false);
-  // };
 
   return (
     <div
@@ -48,9 +27,6 @@ const AudioPlayer = ({ embedIMGLink, title, artistName, embedLink }) => {
           <audio id="audio" controls autoPlay src={embedLink} className="w-full ml-4">
             Your browser does not support the audio element.
           </audio>
-          {/* <div className="mt-2">
-            <button onClick={handlePlayClick}>{isPlaying ? "Pause" : "Play"}</button>
-          </div> */}
         </div>
       </div>
     </div>

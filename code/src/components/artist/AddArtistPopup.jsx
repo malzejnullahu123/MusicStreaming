@@ -4,14 +4,14 @@ import ApiService from "../../axios/AxiosService";
 const AddArtistPopup = ({ onClose }) => {
   const [formData, setFormData] = useState({
     artistName: "",
-    imageUrl: "",
+    imageUrl: ""
   });
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -20,10 +20,7 @@ const AddArtistPopup = ({ onClose }) => {
 
     try {
       // Make API call to register artist
-      await ApiService.registerArtist({
-        name: formData.artistName,
-        embedImgLink: formData.imageUrl,
-      });
+      await ApiService.registerArtist({ name: formData.artistName, embedImgLink: formData.imageUrl });
 
       // Reset form fields
       setFormData({ artistName: "", imageUrl: "" });
@@ -41,10 +38,7 @@ const AddArtistPopup = ({ onClose }) => {
         <h2 className="text-xl font-bold mb-4">Add Artist</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label
-              htmlFor="artistName"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="artistName" className="block text-sm font-medium text-gray-700">
               Artist Name
             </label>
             <input
@@ -59,10 +53,7 @@ const AddArtistPopup = ({ onClose }) => {
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="imageUrl"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
               Image URL
             </label>
             <input

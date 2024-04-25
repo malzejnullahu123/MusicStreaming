@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Card_sm } from "./Card_sm";
 import ApiService from "../../axios/AxiosService";
+import { useAuth } from '../../authContext/AuthContext';
 
 export const Sidebar = () => {
   const [items, setItems] = useState([]);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    ApiService.getPlayHistory()
+    {isLoggedIn && (
+      ApiService.getPlayHistory()
       .then(response => {
         setItems(response.data);
       })
       .catch(error => {
         console.error('Error fetching items:', error);
-      });
+      })
+    )}
   }, []);
 
   return (
@@ -36,7 +40,7 @@ export const Sidebar = () => {
           );
         })}
         <p className='text-sm mt-3'>From students of Life from Gjirafa...</p>
-        <span className='text-gray-500 text-[12px]'>Â© Copyright 2024</span>
+        <span className='text-gray-500 text-[12px]'>© Copyright 2024</span>
       </section>
     </>
   );

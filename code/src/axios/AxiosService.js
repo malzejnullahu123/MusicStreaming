@@ -15,7 +15,7 @@ const getUserIdFromHeaders = () => {
 };
 
 // Check if user credentials exist in session storage and set headers accordingly
-const storedCredentials = JSON.parse(sessionStorage.getItem('userCredentials'));
+const storedCredentials = JSON.parse(localStorage.getItem('userCredentials'));
 if (storedCredentials) {
   apiClient.defaults.headers['X-User-Id'] = storedCredentials.userId;
   apiClient.defaults.headers['X-User-Name'] = storedCredentials.name;

@@ -1,5 +1,13 @@
-const Search = () => (
-  <div>Search</div>
-);
+import React from "react";
+import { LayoutSidebar, SearchComp } from "../router";
 
-export default Search;
+export const Search = () => {
+
+  return (
+    <>
+      <LayoutSidebar>
+        <SearchComp />
+      </LayoutSidebar>
+    </>
+  )
+}

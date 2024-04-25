@@ -23,10 +23,6 @@ export const Header = () => {
 
   const activeNavLink = ({ isActive }) => (isActive ? "active" : "NavLink");
 
-  const handleMenuItemClick = () => {
-    setIsMenu(false);
-  };
-
   return (
     <header className='fixed top-0 left-0 z-50 w-screen h-[8vh] md:shadow-md shadow-sm bg-white'>
       {/* desktop and tablet */}
@@ -47,8 +43,8 @@ export const Header = () => {
         <div className='menu'>
           <ul className='flex'>
             {navBar.map((list, i) => (
-               <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                <NavLink to={list.path} onClick={handleMenuItemClick}>{list.name}</NavLink>
+              <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
+                <NavLink to={list.path}>{list.name}</NavLink>
               </li>
             ))}
           </ul>
@@ -100,13 +96,13 @@ export const Header = () => {
               {isLoggedIn ? (
                 navBar.map((list, i) => (
                   <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                    <NavLink to={list.path}  onClick={handleMenuItemClick}>{list.name}</NavLink>
+                    <NavLink to={list.path}>{list.name}</NavLink>
                   </li>
                 ))
               ) : (
                 navBarMobile.map((list, i) => (
                   <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                    <NavLink to={list.path}  onClick={handleMenuItemClick}>{list.name}</NavLink>
+                    <NavLink to={list.path}>{list.name}</NavLink>
                   </li>
                 ))
               )}

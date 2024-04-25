@@ -31,16 +31,38 @@ export const Card_lg = ({ songId, embedIMGLink, title, embedLink, artistName }) 
     }
   };
 
+  const handleImgClick = () => {
+    window.location.href = `/songDetails/${songId}`;
+  }
+
+  const handleShareClick = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: `Check out this song: ${title} by ${artistName}`,
+        url: window.location.href
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.error('Error sharing:', error));
+    } else {
+      navigator.clipboard.writeText(window.location.href+"songDetails/"+songId)
+        .then(() => alert('Link copied to clipboard'))
+        .catch((error) => console.error('Error copying link to clipboard:', error));
+    }
+  };
+  
+
+
   return (
     <>
       <div className="img relative h-72">
-        <img src={embedIMGLink} alt="embedIMGLink" className="w-full h-full object-cover rounded-md" />
+        <img src={embedIMGLink} alt="embedIMGLink" className="w-full h-full object-cover rounded-md cursor-pointer" onClick={handleImgClick} />
         <div className="overlay icon absolute top-1/2 left-[40%] text-white ">
           <AiFillPlayCircle size={50} className="cursor-pointer" onClick={handlePlayClick} />
         </div>
         <div className="overlay absolute bottom-0 right-0 text-white">
           <div className="flex p-3">
-            <BsThreeDots size={22} />
+            <BsThreeDots size={22} onClick={handleShareClick} />
           </div>
         </div>
       </div>
@@ -66,33 +88,3 @@ export const Card_lg = ({ songId, embedIMGLink, title, embedLink, artistName }) 
     </>
   );
 };
-
-      {/* {isPlayerVisible && (
-        <div
-          className="fixed bottom-0 left-0 right-0 text-white p-4 flex items-center justify-center"
-          style={{
-            zIndex: 9999,
-            backdropFilter: "blur(10px)",
-            background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%)",
-          }}
-        >
-          <div className="flex items-center w-full">
-            <img
-              src={embedIMGLink}
-              alt="Song cover"
-              className="w-16 h-16 mr-4 object-cover rounded-md hidden md:block"
-            />
-            <div className="flex-1 relative">
-              <div className="ml-6">
-              <div className="flex items-center">
-                <h3 className="text-lg text-black font-semibold mb-1 mr-4" style={{ textShadow: "0 0 5px white" }}>{title}</h3>
-                <p className="text-sm text-black" style={{ textShadow: "0 0 5px white" }}>{artistName}</p>
-              </div>
-              </div>
-              <audio controls autoPlay src={embedLink} className="w-full ml-4">
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-          </div>
-        </div>
-      )} */}

@@ -1,5 +1,12 @@
-import React from 'react';
+import React from "react"
+import { AlbumComp, LayoutSidebar } from "../router"
 
-const Albums = () => <div>Albums</div>;
-
-export default Albums;
+export const Albums = () => {
+  return (
+    <>
+      <LayoutSidebar>
+        <AlbumComp />
+      </LayoutSidebar>
+    </>
+  )
+}
