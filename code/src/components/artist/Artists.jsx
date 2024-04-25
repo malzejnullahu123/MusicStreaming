@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../axios/AxiosService";
 import { Link } from "react-router-dom";
-import { AiOutlinePlus } from "react-icons/ai";
-import AddArtistPopup from "./AddArtistPopup"; // Import the popup component
 
 export const Artists = () => {
   const [artists, setArtists] = useState([]);
-  const [isPopupOpen, setPopupOpen] = useState(false); // State for managing popup visibility
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -33,11 +30,7 @@ export const Artists = () => {
     <div>
       <section className='mt-8 sm:mt-20'>
         <div className="flex justify-between items-center mb-5">
-          <h1 className='text-5xl font-bold text-primary'>Artists</h1>
-          <button onClick={() => setPopupOpen(true)} className="flex items-center bg-primary text-white rounded-full px-4 py-2">
-            <AiOutlinePlus className="mr-2" />
-            Add Artist
-          </button>
+          <h1 className='text-5xl font-bold text-primary mb-5'>Artists</h1>
         </div>
         <div className='grid grid-cols-2 md:grid-cols-4 gap-5 sm:grid-cols-1'>
           {artists.map((artist, i) => (
@@ -60,7 +53,6 @@ export const Artists = () => {
           </button>
         </div>
       </section>
-      {isPopupOpen && <AddArtistPopup onClose={() => {setPopupOpen(false); fetchArtists();}} />} {/* Render the popup component if isPopupOpen is true */}
     </div>
   );
 };

@@ -8,16 +8,16 @@ export const Sidebar = () => {
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    {isLoggedIn && (
-      ApiService.getPlayHistory()
-      .then(response => {
-        setItems(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching items:', error);
-      })
-    )}
-  }, []);
+    if (isLoggedIn) {
+      ApiService.getPlayHistory(localStorage.getItem('token'))
+        .then(response => {
+          setItems(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching items:', error);
+        });
+    }
+  }, [isLoggedIn]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import ApiService from '../../axios/AxiosService';
 import logo from '../../components/assets/images/logo.png';
 import { useAuth } from '../../authContext/AuthContext'; // Import useAuth hook
 import { Navigate } from "react-router-dom";
-import { setUserCredentials } from '../../axios/AxiosService';
+import { setToken } from '../../axios/AxiosService';
 
 export const LoginForm = () => {
   const [redirect, setRedirect] = useState(false);
@@ -26,18 +26,19 @@ export const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
-
+  
     ApiService.login(formData)
       .then(response => {
-        const { userId, fullName, email } = response.data; // Assuming the backend returns name and email
-        setUserCredentials(userId, fullName, email);
-        login();
+        const { token } = response.data;
+        setToken(token);
+        login(); // Assuming login sets the authentication state
         setRedirect(true);
       })
       .catch(error => {
-        setError(error.response.data);
+        setError(error.response.data.message);
       });
   };
+  
   if (redirect) {
     return <Navigate to="/profile" />;
   }

@@ -16,6 +16,10 @@ const navBarMobile = [
   ...navBar,
   { id: 5, name: "Login", path: "/login" }
 ];
+const navBarMobileLoggedin = [
+  ...navBar,
+  { id: 5, name: "Profile", path: "/profile" }
+];
 
 export const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
@@ -94,7 +98,7 @@ export const Header = () => {
           <div className='bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-16 left-0 w-full '>
             <ul className='flex flex-col'>
               {isLoggedIn ? (
-                navBar.map((list, i) => (
+                navBarMobileLoggedin.map((list, i) => (
                   <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
                     <NavLink to={list.path}>{list.name}</NavLink>
                   </li>

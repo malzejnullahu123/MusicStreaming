@@ -9,33 +9,21 @@ const apiClient = axios.create({
   },
 });
 
-const getUserIdFromHeaders = () => {
-  const userIdHeader = apiClient.defaults.headers['X-User-Id'];
-  return userIdHeader;
-};
-
 // Check if user credentials exist in session storage and set headers accordingly
-const storedCredentials = JSON.parse(localStorage.getItem('userCredentials'));
-if (storedCredentials) {
-  apiClient.defaults.headers['X-User-Id'] = storedCredentials.userId;
-  apiClient.defaults.headers['X-User-Name'] = storedCredentials.name;
-  apiClient.defaults.headers['X-User-Email'] = storedCredentials.email;
+const storedToken = localStorage.getItem('token');
+if (storedToken) {
+  apiClient.defaults.headers['Authorization'] = `Bearer ${storedToken}`;
 }
 
-export const setUserCredentials = (userId, name, email) => {
-  localStorage.setItem('userCredentials', JSON.stringify({ userId, name, email }));
-  apiClient.defaults.headers['X-User-Id'] = userId;
-  apiClient.defaults.headers['X-User-Name'] = name;
-  apiClient.defaults.headers['X-User-Email'] = email;
+export const setToken = (token) => {
+  localStorage.setItem('token', token);
+  apiClient.defaults.headers['Authorization'] = `Bearer ${token}`;
 };
 
-export const removeUserCredentials = () => {
-  localStorage.removeItem('userCredentials');
-  delete apiClient.defaults.headers['X-User-Id'];
-  delete apiClient.defaults.headers['X-User-Name'];
-  delete apiClient.defaults.headers['X-User-Email'];
+export const removeToken = () => {
+  localStorage.removeItem('token');
+  delete apiClient.defaults.headers['Authorization'];
 };
-
 
 const ApiService = {
   getNewSongs(pageSize) {
@@ -79,13 +67,11 @@ const ApiService = {
   },
 
   postPlayHistory(songId) {
-    const userId = getUserIdFromHeaders();
-    return apiClient.post('/api/PlayHistory', { userId, songId });
+    return apiClient.post('/api/PlayHistory', { songId });
   },
-
-  getPlayHistory() {
-    const userId = getUserIdFromHeaders();
-    return apiClient.get(`/api/PlayHistory/${userId}`);
+  
+  getPlayHistory(token) {
+    return apiClient.get(`/api/PlayHistory/${token}`);
   },
 
   getAllAlbums(pageNumber, pageSize) {
