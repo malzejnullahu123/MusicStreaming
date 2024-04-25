@@ -32,17 +32,33 @@ const AlbumCard = ({ albumId, title, image, artistName, releaseDate }) => {
 
 
 export const AlbumComp = () => {
+  const [page, setPage] = useState(1);
   const [albums, setAlbums] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    ApiService.getAllAlbums()
-      .then(response => {
-        setAlbums(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching albums:', error);
-      });
-  }, []);
+    fetchAlbums();
+  }, [page]);
+
+  const fetchAlbums = async () => {
+    try {
+      const response = await ApiService.getAllAlbums(page, 3);
+      if (response.data.length === 0) {
+        setHasMore(false); // No more results available
+      } else {
+        setAlbums((prevAlbums) => {
+          const newAlbums = response.data.filter(album => !prevAlbums.find(prevAlbum => prevAlbum.albumId === album.albumId));
+          return [...prevAlbums, ...newAlbums];
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching albums:', error);
+    }
+  };
+
+  const handleShowMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   return (
     <>
@@ -60,7 +76,15 @@ export const AlbumComp = () => {
             />
           ))}
         </div>
+        {hasMore && (
+          <div className="mt-5 text-center">
+            <button onClick={handleShowMore} className="bg-primary text-white px-4 py-2 rounded-full">
+              Show More
+            </button>
+          </div>
+        )}
       </section>
     </>
   );
 };
+

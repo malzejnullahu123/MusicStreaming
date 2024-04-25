@@ -7,18 +7,26 @@ import AddArtistPopup from "./AddArtistPopup"; // Import the popup component
 export const Artists = () => {
   const [artists, setArtists] = useState([]);
   const [isPopupOpen, setPopupOpen] = useState(false); // State for managing popup visibility
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     fetchArtists();
-  }, []);
+  }, [page]); // Fetch artists whenever the page changes
 
   const fetchArtists = async () => {
     try {
-      const response = await ApiService.getAllArtists(1,10);
-      setArtists(response.data);
+      const response = await ApiService.getAllArtists(page, 4);
+      setArtists((prevArtists) => {
+        const newArtists = response.data.filter(artist => !prevArtists.find(prevArtist => prevArtist.artistId === artist.artistId));
+        return [...prevArtists, ...newArtists];
+      });
     } catch (error) {
       console.error('Error fetching artists:', error);
     }
+  };
+
+  const handleShowMore = () => {
+    setPage((prevPage) => prevPage + 1);
   };
 
   return (
@@ -45,6 +53,11 @@ export const Artists = () => {
               </div>
             </Link>
           ))}
+        </div>
+        <div className="mt-5 text-center">
+          <button onClick={handleShowMore} className="bg-primary text-white px-4 py-2 rounded-full">
+            Show More
+          </button>
         </div>
       </section>
       {isPopupOpen && <AddArtistPopup onClose={() => {setPopupOpen(false); fetchArtists();}} />} {/* Render the popup component if isPopupOpen is true */}

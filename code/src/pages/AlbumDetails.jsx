@@ -4,8 +4,19 @@ import ApiService from "../axios/AxiosService";
 import { Card_sm } from "../components/common/Card_sm";
 
 export const AlbumDetails = () => {
-    const { albumId, artistName } = useParams();
+    const { albumId } = useParams();
     const [songs, setSongs] = useState([]);
+    const [item, setItem] = useState({});
+
+    useEffect(() => {
+        ApiService.getAlbumById(albumId)
+            .then(response => {
+                setItem(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching items:', error);
+            });
+    }, [albumId]);
 
     useEffect(() => {
         ApiService.getSongsByAlbum(albumId)
@@ -19,7 +30,7 @@ export const AlbumDetails = () => {
 
     return (
         <div className="container mx-auto p-4 bg-gradient-to-r from-gray-250 to-gray-150 rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold mb-4">Album Details for {artistName}</h1>
+            <h1 className="text-3xl font-bold mb-4">Album Details for "{item.title}"</h1>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 {songs.map((song, index) => (
                     <Card_sm

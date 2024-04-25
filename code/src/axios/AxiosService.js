@@ -88,8 +88,8 @@ const ApiService = {
     return apiClient.get(`/api/PlayHistory/${userId}`);
   },
 
-  getAllAlbums() {
-    return apiClient.get('/api/Album/all');
+  getAllAlbums(pageNumber, pageSize) {
+    return apiClient.get(`/api/Album/all/${pageNumber}/${pageSize}`);
   },
 
   getSongsByAlbum(albumId) {

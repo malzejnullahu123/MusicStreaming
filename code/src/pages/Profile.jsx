@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../authContext/AuthContext";
 import { removeUserCredentials } from '../axios/AxiosService';
 
 export const Profile = () => {
-  const { logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setRedirect(true);
+    }
+  }, [isLoggedIn]);
 
   const handleSignOut = () => {
     removeUserCredentials();
