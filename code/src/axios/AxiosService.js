@@ -46,6 +46,14 @@ const ApiService = {
   searchArtists(query, artistPage, pageSize) {
     return apiClient.get(`/api/Search/artists?query=${query}&pageNumber=${artistPage}&pageSize=${pageSize}`);
   },
+  
+  searchUsers(query, artistPage, pageSize) {
+    return apiClient.get(`/api/Search/users?query=${query}&pageNumber=${artistPage}&pageSize=${pageSize}`);
+  },
+  
+  searchPlaylists(query, artistPage, pageSize) {
+    return apiClient.get(`/api/Search/playlists?query=${query}&pageNumber=${artistPage}&pageSize=${pageSize}`);
+  },
 
   getAllArtists(pageNumber, pageSize) {
     return apiClient.get(`/api/Artist/all/${pageNumber}/${pageSize}`);
@@ -107,8 +115,28 @@ const ApiService = {
     return apiClient.get(`/api/User/me?token=${token}`);
   },
 
-  getNrFollow() {
-    return apiClient.get(`/api/User/allfollows`);
+  getUserById(id) {
+    return apiClient.get(`/api/User/${id}`);
+  },
+
+  getNrFollow(id) {
+    return apiClient.get(`/api/User/allfollows/${id}`);
+  },
+
+  followUser(id) {
+    return apiClient.post(`/api/User/follow/${id}`, { id });
+  },
+
+  unfollowUser(id) {
+    return apiClient.post(`/api/User/unfollow/${id}`, { id });
+  },
+
+  checkIfIsFollowing(id) {
+    return apiClient.get(`/api/User/isfollowing/${id}`);
+  },
+
+  getRecommendedSongs() {
+    return apiClient.get(`/api/Song/recommended/a`);
   },
 
 

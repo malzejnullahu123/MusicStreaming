@@ -9,33 +9,79 @@ export const Profile = () => {
   const { userId } = useParams();
   const { isLoggedIn, logout } = useAuth();
   const [redirect, setRedirect] = useState(false);
-  const [item, setItem] = useState([]);
+  const [item, setItem] = useState({});
   const [followerCounts, setFollowerCounts] = useState({ followerCount: 0, followingCount: 0 });
+  const [myProfile, setMyProfile] = useState(false);
+  const [profileInfo, setProfileInfo] = useState({});
+  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     ApiService.me(localStorage.getItem('token'))
       .then(response => {
         setItem(response.data);
-        console.log(item.fullName)
+        console.log(response.data.userId + "    " + userId);
+
+        // Compare userId from URL params with userId from API response
+        if (userId == response.data.userId) {
+          setMyProfile(true);
+          console.log("It's my profile");
+        } else {
+          ///// check if following
+          ApiService.checkIfIsFollowing(userId)
+          .then(response => {
+            setFollowing(response.data);
+            console.log(response.data)
+          })
+          .catch(error => {
+            console.error('Error fetching user information:', error);
+          });
+        }
       })
       .catch(error => {
-        console.error('Error fetching items:', error);
+        console.error('Error fetching user information:', error);
       });
-      ApiService.getNrFollow()
+/////// for other profile pages
+      ApiService.getUserById(userId)
+      .then(response => {
+        setProfileInfo(response.data);
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching user information:', error);
+      });
+    
+    ApiService.getNrFollow(userId)
       .then(response => {
         setFollowerCounts(response.data);
       })
       .catch(error => {
         console.error('Error fetching follower counts:', error);
       });
-  }, []);
-
+  }, [userId, following]); // Trigger the effect when userId changes
   
-
   const handleSignOut = () => {
     removeToken();
     logout();
     setRedirect(true);
+  };
+  const handleFollow = () => {
+    if (following) {
+      ApiService.unfollowUser(userId)
+        .then(response => {
+          setFollowing(false);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    } else {
+      ApiService.followUser(userId)
+      .then(response => {
+        setFollowing(true);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
   };
 
   if (redirect) {
@@ -49,7 +95,7 @@ export const Profile = () => {
           <div className="flex items-center">
             <img src="https://via.placeholder.com/150" alt="Profile" className="rounded-full h-16 w-16 mr-4" />
             <div>
-              <h1 className="text-2xl font-semibold">{item.fullName}</h1>
+              <h1 className="text-2xl font-semibold">{profileInfo.fullName}</h1>
               <p className="text-gray-500 text-lg">Music lover</p>
               <div className="flex text-gray-500 text-sm">
                 <span className="mr-4">{followerCounts.followerCount} Followers</span>
@@ -58,9 +104,21 @@ export const Profile = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Become an Artist</button>
-            <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Sign Out</button>
-          </div>        </div>
+            {/* Render "Become an Artist" button only if it's the user's profile */}
+            {myProfile && (
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Become an Artist</button>
+            )}
+            {/* Render "Sign Out" button only if it's the user's profile */}
+            {myProfile && (
+              <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Sign Out</button>
+            )}
+            {!myProfile && (
+              <button onClick={handleFollow} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                {following ? "Following" : "Follow"}
+              </button>
+            )}
+          </div>
+        </div>
         <div className="p-6">
           <h2 className="text-lg font-semibold">John Doe's uploads:</h2>
           <div className="grid grid-cols-3 gap-4 mt-4">
@@ -87,3 +145,4 @@ export const Profile = () => {
     </div>
   );
 };
+

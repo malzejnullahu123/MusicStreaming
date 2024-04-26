@@ -11,7 +11,7 @@ export { SignUpForm } from "./components/auth/SignUpForm"
 export { SearchComp } from "./components/search/SearchComp"
 
 
-// Page router
+// Page
 export { Home } from "./pages/Home"
 export { Albums } from "./pages/Albums"
 export { Playlist } from "./pages/Playlist"

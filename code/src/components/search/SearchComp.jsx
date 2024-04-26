@@ -3,13 +3,19 @@ import { Link, useParams } from 'react-router-dom';
 import { Title } from '../common/Title';
 import { Card_lg } from '../common/Card_lg';
 import ApiService from '../../axios/AxiosService';
+import {CardPlaylist} from '../common/Card_Playlist'
 
 export const SearchComp = () => {
   const { query } = useParams();
   const [songs, setSongs] = useState([]);
   const [artists, setArtists] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
   const [songPage, setSongPage] = useState(1);
   const [artistPage, setArtistPage] = useState(1);
+  const [userPage, setUserPage] = useState(1);
+  const [playlistPage, setPlaylistPage] = useState(1);
+
 
   useEffect(() => {
     if (query) {
@@ -22,7 +28,7 @@ export const SearchComp = () => {
           setSongs([]);
         });
   
-      ApiService.searchArtists(query, artistPage, 4)
+        ApiService.searchArtists(query, artistPage, 4)
         .then(response => {
           setArtists(response.data.length > 0 ? response.data : []);
         })
@@ -30,11 +36,29 @@ export const SearchComp = () => {
           console.error('Error fetching artists:', error);
           setArtists([]);
         });
+        ApiService.searchUsers(query, userPage, 4)
+        .then(response => {
+          setUsers(response.data.length > 0 ? response.data : []);
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error);
+          setUsers([]);
+        });
+        ApiService.searchPlaylists(query, userPage, 4)
+        .then(response => {
+          setPlaylists(response.data.length > 0 ? response.data : []);
+        })
+        .catch(error => {
+          console.error('Error fetching playlists:', error);
+          setPlaylists([]);
+        });
     } else {
       setSongs([]);
       setArtists([]);
+      setUsers([]);
+      setPlaylists([]);
     }
-  }, [query, songPage, artistPage]);
+  }, [query, songPage, artistPage, userPage, playlistPage]);
 
   const handleSongSeeMore = () => {
     setSongPage(songPage + 1);
@@ -51,6 +75,22 @@ export const SearchComp = () => {
 
   const handleArtistSeeLess = () => {
     setArtistPage(artistPage - 1);
+  };
+
+  const handleUserSeeMore = () => {
+    setUserPage(userPage + 1);
+  };
+
+  const handleUserSeeLess = () => {
+    setUserPage(userPage - 1);
+  };
+
+  const handlePlaylistSeeMore = () => {
+    setPlaylistPage(userPage + 1);
+  };
+
+  const handlePlaylistSeeLess = () => {
+    setPlaylistPage(userPage - 1);
   };
 
   return (
@@ -134,6 +174,96 @@ export const SearchComp = () => {
           <div className="absolute bottom-4 right-4">
             <span className="text-sm text-gray-500">
               Page {artistPage}
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+      {/* userSection now */}
+  
+      <section className='hero'>
+        <div className='container mx-auto p-4 bg-red-100 rounded-lg shadow-lg relative'>
+          <Title title='Search for Users:' />
+          {users.length === 0 && (
+            <p className="text-center">No Results found for "{query}"</p>
+          )}
+          <div className='grid grid-cols-2 md:grid-cols-4 sm:grid-cols-1 gap-5'>
+            {users.map((user, i) => (
+              <Link to={`/profile/${user.userId}`} key={user.userId}>
+                <div className='box card text-center'>
+                  <div className='img relative h-52 w-52 m-auto'>
+                    <img src={user.embedImgLink} alt='cover' className='w-full h-full object-cover rounded-full' />
+                  </div>
+                  <div className='text-center'>
+                    <h3 className='text-md text-gray-500 font-semibold'>{user.fullName}</h3>
+                    <span className='text-gray-400'>{user.role}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className='flex justify-center mt-5'>
+            {userPage > 1 && (
+              <button onClick={handleUserSeeLess} className='bg-primary text-white px-4 py-2 rounded-md mr-4'>
+                See less
+              </button>
+            )}
+            {artists.length === 4 && (
+              <button onClick={handleUserSeeMore} className='bg-primary text-white px-4 py-2 rounded-md'>
+                See more
+              </button>
+            )}
+          </div>
+  
+          <div className="absolute bottom-4 right-4">
+            <span className="text-sm text-gray-500">
+              Page {userPage}
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* playlistat */}
+
+      <section className='hero'>
+        <div className='container mx-auto p-4 bg-yellow-100 rounded-lg shadow-lg relative'>
+          <Title title='Search for playlists:' />
+          {playlists.length === 0 && (
+            <p className="text-center">No Results found for "{query}"</p>
+          )}
+          <div className='grid grid-cols-2 md:grid-cols-4 sm:grid-cols-1 gap-5'>
+            {playlists.map((item, index) => (
+              <div className='box card hero' key={index}>
+                <CardPlaylist
+                  key={index}
+                  playlistId={item.playlistId}
+                  name={item.name}
+                  user_name={item.userId}
+                  image={item.image} // Add this line if you have an 'image' property
+                />
+              </div>
+            ))}
+          </div>
+  
+          <div className='flex justify-center mt-5'>
+            {playlistPage > 1 && (
+              <button onClick={handlePlaylistSeeLess} className='bg-primary text-white px-4 py-2 rounded-md mr-4'>
+                See less
+              </button>
+            )}
+            {playlistPage.length === 4 && (
+              <button onClick={handlePlaylistSeeMore} className='bg-primary text-white px-4 py-2 rounded-md'>
+                See more
+              </button>
+            )}
+          </div>
+  
+          <div className="absolute bottom-4 right-4">
+            <span className="text-sm text-gray-500">
+              Page {playlistPage}
             </span>
           </div>
         </div>

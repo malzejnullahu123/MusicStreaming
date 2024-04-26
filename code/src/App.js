@@ -1,7 +1,6 @@
 import { Artist, Albums, Playlist, Profile, Home, Layout, Login, Search, AlbumDetails, SongDetails, PlaylistDetails } from "./router"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ArtistDetails } from "./pages/ArtistDetails";
-import SearchBar from "./components/search/SearchBar";
 
 function App() {
   return (

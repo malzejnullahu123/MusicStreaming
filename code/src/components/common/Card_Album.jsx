@@ -9,7 +9,7 @@ const formatReleaseDate = (dateString) => {
     };
 
   return (
-    <Link to={`/playlistDetails/${albumId}`} className="hover:shadow-lg transition duration-300 ease-in-out block relative">
+    <Link to={`/albumDetails/${albumId}`} className="hover:shadow-lg transition duration-300 ease-in-out block relative">
       <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:translate-y-[-5px]">
         <img src={image} alt={title} className="w-full h-40 object-cover" />
         <div className="p-4 bg-gray-50">
