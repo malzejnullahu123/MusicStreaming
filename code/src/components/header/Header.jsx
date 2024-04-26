@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/images/logo.png";
-import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineMenu } from "react-icons/ai";
 import { FaUser } from 'react-icons/fa';
 import SearchBar from "../search/SearchBar";
 import { useAuth } from '../../authContext/AuthContext';
@@ -19,7 +19,7 @@ const navBarMobile = [
 ];
 const navBarMobileLoggedin = [
   ...navBar,
-  { id: 5, name: "Profile", path: "/profile" }
+  { id: 5, name: "Profile", path: `/profile` }
 ];
 
 export const Header = () => {
@@ -27,12 +27,14 @@ export const Header = () => {
   const [userId, setUserId] = useState();
   // const { isLoggedIn, userId } = useAuth(localStorage.getItem('userId'));
   const { isLoggedIn } = useAuth();
+  const [ profilePic, setProfilePic ] = useState();
 
   useEffect(() => {
     if (isLoggedIn) {
       ApiService.me(localStorage.getItem('token'))
         .then(response => {
           setUserId(response.data.userId);
+          setProfilePic(response.data.embedImgLink)
         })
         .catch(error => {
           console.error('Error fetching user information:', error);
@@ -61,11 +63,18 @@ export const Header = () => {
         {/* navlinks  */}
         <div className='menu'>
           <ul className='flex'>
-            {navBar.map((list, i) => (
+            {/* {navBar.map((list, i) => (
               <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                <NavLink to={list.path}>{list.name}</NavLink>
+                <NavLink  to={list.path}>{list.name}</NavLink>
+                
               </li>
-            ))}
+            ))} */}
+            <li className={`mx-5 py-2 ${activeNavLink}`}>
+              <NavLink className="mx-5 py-2" to={"/"}>Discover</NavLink>
+              <NavLink className="mx-5 py-2" to={"/Albums"}>Albums</NavLink>
+              <NavLink className="mx-5 py-2" to={"/Playlists"}>Playlists</NavLink>
+              <NavLink className="mx-5 py-2" to={"/Artists"}>Artists</NavLink>
+            </li>
           </ul>
         </div>
 
@@ -76,7 +85,7 @@ export const Header = () => {
             <Link to={`/profile/${userId}`}>
               <img
                 className="w-10 h-10 rounded-full mx-3 cursor-pointer transition duration-300 ease-in-out transform hover:scale-110"
-                src="https://picsum.photos/200/200"
+                src={profilePic}
                 alt="Profile"
               />
             </Link>
@@ -111,13 +120,21 @@ export const Header = () => {
 
         {isMenu && (
           <div className='bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-16 left-0 w-full '>
-            <ul className='flex flex-col'>
               {isLoggedIn ? (
-                navBarMobileLoggedin.map((list, i) => (
-                  <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                    <NavLink to={list.path} onClick={() => setIsMenu(!isMenu)}>{list.name}</NavLink>
-                  </li>
-                ))
+                  <ul className='flex flex-col'>
+                    <li className={`mx-5 py-2 ${activeNavLink}`}>
+                      <NavLink to={"/"} onClick={() => setIsMenu(!isMenu)}>Discover</NavLink></li>
+                    <li className={`mx-5 py-2  ${activeNavLink}`}>
+                      <NavLink to={"/Albums"} onClick={() => setIsMenu(!isMenu)}>Albums</NavLink></li>
+                    <li className={`mx-5 py-2  ${activeNavLink}`}>
+                      <NavLink to={"/Playlists"} onClick={() => setIsMenu(!isMenu)}>Playlists</NavLink></li>
+                    <li className={`mx-5 py-2  ${activeNavLink}`}>
+                      <NavLink to={"/Artists"} onClick={() => setIsMenu(!isMenu)}>Artists</NavLink></li>
+                    <li className={`mx-5 py-2  ${activeNavLink}`}>
+                      <NavLink to={`/profile/${userId}`} onClick={() => setIsMenu(!isMenu)}>Profile</NavLink></li>
+                  </ul>
+
+                // ))
               ) : (
                 navBarMobile.map((list, i) => (
                   <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
@@ -125,7 +142,6 @@ export const Header = () => {
                   </li>
                 ))
               )}
-            </ul>
           </div>
         )}
 

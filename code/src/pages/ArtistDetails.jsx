@@ -62,7 +62,12 @@ export const ArtistDetails = () => {
         <p>Loading...</p>
       ) : artist ? (
         <div className="p-6">
+          <div className="flex justify-between">
           <h1 className="text-3xl font-bold mb-4">{artist.name}</h1>
+          <button className="mr-7">test</button>
+          </div>
+          
+
           <p className="text-gray-700 mb-4">These are all the songs from {artist.name}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {songs.map((song, index) => (

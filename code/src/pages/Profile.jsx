@@ -19,18 +19,17 @@ export const Profile = () => {
     ApiService.me(localStorage.getItem('token'))
       .then(response => {
         setItem(response.data);
-        console.log(response.data.userId + "    " + userId);
+        // console.log(response.data)
 
-        // Compare userId from URL params with userId from API response
         if (userId == response.data.userId) {
           setMyProfile(true);
-          console.log("It's my profile");
+          // console.log("It's my profile");
         } else {
+
           ///// check if following
           ApiService.checkIfIsFollowing(userId)
           .then(response => {
             setFollowing(response.data);
-            console.log(response.data)
           })
           .catch(error => {
             console.error('Error fetching user information:', error);
@@ -93,7 +92,7 @@ export const Profile = () => {
       <div className="bg-white shadow-lg rounded-lg overflow-hidden mx-auto max-w-4xl">
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center">
-            <img src="https://via.placeholder.com/150" alt="Profile" className="rounded-full h-16 w-16 mr-4" />
+            <img src={profileInfo.embedImgLink} alt="Profile" className="rounded-full h-16 w-16 mr-4" />
             <div>
               <h1 className="text-2xl font-semibold">{profileInfo.fullName}</h1>
               <p className="text-gray-500 text-lg">Music lover</p>

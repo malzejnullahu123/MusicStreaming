@@ -39,12 +39,14 @@ export const SearchComp = () => {
         ApiService.searchUsers(query, userPage, 4)
         .then(response => {
           setUsers(response.data.length > 0 ? response.data : []);
+          console.log(response.data)
+
         })
         .catch(error => {
           console.error('Error fetching users:', error);
           setUsers([]);
         });
-        ApiService.searchPlaylists(query, userPage, 4)
+        ApiService.searchPlaylists(query, playlistPage, 4)
         .then(response => {
           setPlaylists(response.data.length > 0 ? response.data : []);
         })
@@ -86,11 +88,11 @@ export const SearchComp = () => {
   };
 
   const handlePlaylistSeeMore = () => {
-    setPlaylistPage(userPage + 1);
+    setPlaylistPage(playlistPage + 1);
   };
 
   const handlePlaylistSeeLess = () => {
-    setPlaylistPage(userPage - 1);
+    setPlaylistPage(playlistPage - 1);
   };
 
   return (
@@ -209,7 +211,7 @@ export const SearchComp = () => {
                 See less
               </button>
             )}
-            {artists.length === 4 && (
+            {users.length === 4 && (
               <button onClick={handleUserSeeMore} className='bg-primary text-white px-4 py-2 rounded-md'>
                 See more
               </button>
@@ -254,7 +256,7 @@ export const SearchComp = () => {
                 See less
               </button>
             )}
-            {playlistPage.length === 4 && (
+            {playlists.length === 4 && (
               <button onClick={handlePlaylistSeeMore} className='bg-primary text-white px-4 py-2 rounded-md'>
                 See more
               </button>
