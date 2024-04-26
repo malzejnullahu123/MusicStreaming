@@ -7,6 +7,7 @@ import { setToken } from '../../axios/AxiosService';
 
 export const LoginForm = () => {
   const [redirect, setRedirect] = useState(false);
+  const [userId, setUserId] = useState(localStorage.getItem('userId')); // State to store userId
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -31,8 +32,16 @@ export const LoginForm = () => {
       .then(response => {
         const { token } = response.data;
         setToken(token);
-        login(); // Assuming login sets the authentication state
-        setRedirect(true);
+        ApiService.me(token)
+          .then(response => {
+            const { userId } = response.data;
+            setUserId(userId); // Store userId in state
+            login(userId);
+            setRedirect(true);
+          })
+          .catch(error => {
+            console.error('Error fetching user ID:', error);
+          });
       })
       .catch(error => {
         setError(error.response.data.message);
@@ -40,7 +49,7 @@ export const LoginForm = () => {
   };
   
   if (redirect) {
-    return <Navigate to="/profile" />;
+    return <Navigate to={`/profile/${userId}`} />;
   }
 
   return (

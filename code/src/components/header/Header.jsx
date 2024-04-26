@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { FaUser } from 'react-icons/fa';
 import SearchBar from "../search/SearchBar";
 import { useAuth } from '../../authContext/AuthContext';
+import ApiService from "../../axios/AxiosService";
 
 const navBar = [
   { id: 1, name: "Discover", path: "/" },
   { id: 2, name: "Albums", path: "/albums" },
-  { id: 3, name: "Charts", path: "/charts" },
+  { id: 3, name: "Playlists", path: "/playlists" },
   { id: 4, name: "Artists", path: "/artists" }
 ];
 const navBarMobile = [
@@ -23,7 +24,21 @@ const navBarMobileLoggedin = [
 
 export const Header = () => {
   const [isMenu, setIsMenu] = useState(false);
+  const [userId, setUserId] = useState();
+  // const { isLoggedIn, userId } = useAuth(localStorage.getItem('userId'));
   const { isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      ApiService.me(localStorage.getItem('token'))
+        .then(response => {
+          setUserId(response.data.userId);
+        })
+        .catch(error => {
+          console.error('Error fetching user information:', error);
+        });
+    }
+  }, [isLoggedIn]);
 
   const activeNavLink = ({ isActive }) => (isActive ? "active" : "NavLink");
 
@@ -58,7 +73,7 @@ export const Header = () => {
         <div className='profile flex items-center'>
           <SearchBar />
           {isLoggedIn && (
-            <Link to="/profile">
+            <Link to={`/profile/${userId}`}>
               <img
                 className="w-10 h-10 rounded-full mx-3 cursor-pointer transition duration-300 ease-in-out transform hover:scale-110"
                 src="https://picsum.photos/200/200"
@@ -100,19 +115,20 @@ export const Header = () => {
               {isLoggedIn ? (
                 navBarMobileLoggedin.map((list, i) => (
                   <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                    <NavLink to={list.path}>{list.name}</NavLink>
+                    <NavLink to={list.path} onClick={() => setIsMenu(!isMenu)}>{list.name}</NavLink>
                   </li>
                 ))
               ) : (
                 navBarMobile.map((list, i) => (
                   <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                    <NavLink to={list.path}>{list.name}</NavLink>
+                    <NavLink to={list.path} onClick={() => setIsMenu(!isMenu)}>{list.name}</NavLink>
                   </li>
                 ))
               )}
             </ul>
           </div>
         )}
+
       </div>
     </header>
   );

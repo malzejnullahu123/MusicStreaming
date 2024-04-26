@@ -1,11 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../authContext/AuthContext";
 import { removeToken } from '../axios/AxiosService';
+import ApiService from "../axios/AxiosService";
 
 export const Profile = () => {
+  const { userId } = useParams();
   const { isLoggedIn, logout } = useAuth();
   const [redirect, setRedirect] = useState(false);
+  const [item, setItem] = useState([]);
+  const [followerCounts, setFollowerCounts] = useState({ followerCount: 0, followingCount: 0 });
+
+  useEffect(() => {
+    ApiService.me(localStorage.getItem('token'))
+      .then(response => {
+        setItem(response.data);
+        console.log(item.fullName)
+      })
+      .catch(error => {
+        console.error('Error fetching items:', error);
+      });
+      ApiService.getNrFollow()
+      .then(response => {
+        setFollowerCounts(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching follower counts:', error);
+      });
+  }, []);
+
+  
 
   const handleSignOut = () => {
     removeToken();
@@ -24,16 +49,18 @@ export const Profile = () => {
           <div className="flex items-center">
             <img src="https://via.placeholder.com/150" alt="Profile" className="rounded-full h-16 w-16 mr-4" />
             <div>
-              <h1 className="text-2xl font-semibold">John Doe</h1>
-              <p className="text-gray-500 text-lg">Musician</p>
+              <h1 className="text-2xl font-semibold">{item.fullName}</h1>
+              <p className="text-gray-500 text-lg">Music lover</p>
               <div className="flex text-gray-500 text-sm">
-                <span className="mr-4">100 Followers</span>
-                <span>100 Following</span>
+                <span className="mr-4">{followerCounts.followerCount} Followers</span>
+                <span>{followerCounts.followingCount} Following</span>
               </div>
             </div>
           </div>
-          <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Sign Out</button>
-        </div>
+          <div className="flex items-center space-x-4">
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Become an Artist</button>
+            <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Sign Out</button>
+          </div>        </div>
         <div className="p-6">
           <h2 className="text-lg font-semibold">John Doe's uploads:</h2>
           <div className="grid grid-cols-3 gap-4 mt-4">

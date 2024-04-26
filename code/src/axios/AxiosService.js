@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuth } from '../authContext/AuthContext'
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:5279/',
@@ -9,15 +10,15 @@ const apiClient = axios.create({
   },
 });
 
-// Check if user credentials exist in session storage and set headers accordingly
+
 const storedToken = localStorage.getItem('token');
 if (storedToken) {
-  apiClient.defaults.headers['Authorization'] = `Bearer ${storedToken}`;
+  apiClient.defaults.headers['Authorization'] = `${storedToken}`;
 }
 
 export const setToken = (token) => {
   localStorage.setItem('token', token);
-  apiClient.defaults.headers['Authorization'] = `Bearer ${token}`;
+  apiClient.defaults.headers['Authorization'] = `${token}`;
 };
 
 export const removeToken = () => {
@@ -67,7 +68,7 @@ const ApiService = {
   },
 
   postPlayHistory(songId) {
-    return apiClient.post('/api/PlayHistory', { songId });
+    return apiClient.post('/api/PlayHistory/listen', { songId });
   },
   
   getPlayHistory(token) {
@@ -89,6 +90,27 @@ const ApiService = {
   getSongById(id) {
     return apiClient.get(`/api/Song/${id}`);
   },
+
+  getAllPlaylists(pageNumber, pageSize) {
+    return apiClient.get(`/api/Playlist/all/${pageNumber}/${pageSize}`);
+  },
+
+  getSongsOfPlaylist(playlistId) {
+    return apiClient.get(`/api/Playlist/${playlistId}/all-songs`);
+  },
+
+  getPlaylistById(id) {
+    return apiClient.get(`/api/Playlist/${id}`);
+  },
+
+  me(token) {
+    return apiClient.get(`/api/User/me?token=${token}`);
+  },
+
+  getNrFollow() {
+    return apiClient.get(`/api/User/allfollows`);
+  },
+
 
 };
 

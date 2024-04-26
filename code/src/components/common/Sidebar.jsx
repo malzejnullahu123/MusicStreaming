@@ -6,6 +6,7 @@ import { useAuth } from '../../authContext/AuthContext';
 export const Sidebar = () => {
   const [items, setItems] = useState([]);
   const { isLoggedIn } = useAuth();
+  
 
   useEffect(() => {
     if (isLoggedIn) {

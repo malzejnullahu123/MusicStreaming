@@ -62,7 +62,7 @@ export const Card_lg = ({ songId, embedIMGLink, title, embedLink, artistName }) 
         </div>
         <div className="overlay absolute bottom-0 right-0 text-white">
           <div className="flex p-3">
-            <BsThreeDots size={22} onClick={handleShareClick} />
+            <BsThreeDots size={22}/>
           </div>
         </div>
       </div>

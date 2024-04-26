@@ -1,4 +1,4 @@
-import { Artist, Albums, Charts, Profile, Home, Layout, Login, Search, AlbumDetails, SongDetails } from "./router"
+import { Artist, Albums, Playlist, Profile, Home, Layout, Login, Search, AlbumDetails, SongDetails, PlaylistDetails } from "./router"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ArtistDetails } from "./pages/ArtistDetails";
 import SearchBar from "./components/search/SearchBar";
@@ -17,9 +17,9 @@ function App() {
               <Albums />
             </Layout> }
         />
-        <Route path='/charts' element={
+        <Route path='/playlists' element={
             <Layout>
-              <Charts />
+              <Playlist />
             </Layout> }
         />
         <Route path='/artists' element={
@@ -45,6 +45,12 @@ function App() {
             </Layout>} 
         />
 
+          <Route path='/playlistDetails/:playlistId' element={
+          <Layout>
+            <PlaylistDetails />
+            </Layout>} 
+        />
+
          <Route path='/search/:query' component={Search}  element={
             <Layout>
               <Search />
@@ -55,7 +61,7 @@ function App() {
               <ArtistDetails />
             </Layout> }
         />
-         <Route path='/profile' element={
+         <Route path='/profile/:userId' element={
             <Layout>
               <Profile />
             </Layout> }
