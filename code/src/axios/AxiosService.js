@@ -139,6 +139,10 @@ const ApiService = {
     return apiClient.get(`/api/Song/recommended/a`);
   },
 
+  registerAsArtist(data) {
+    return apiClient.post(`/api/Artist/register`, data);
+  },
+
 
 };
 

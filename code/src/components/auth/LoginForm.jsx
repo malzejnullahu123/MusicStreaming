@@ -7,7 +7,7 @@ import { setToken } from '../../axios/AxiosService';
 
 export const LoginForm = () => {
   const [redirect, setRedirect] = useState(false);
-  const [userId, setUserId] = useState(localStorage.getItem('userId')); // State to store userId
+  const [userId, setUserId] = useState(); // State to store userId
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -34,9 +34,9 @@ export const LoginForm = () => {
         setToken(token);
         ApiService.me(token)
           .then(response => {
-            const { userId } = response.data;
-            setUserId(userId); // Store userId in state
-            login(userId);
+            // console.log(role)
+            setUserId(response.data.userId); // Store userId in state
+            login(response.data.role);
             setRedirect(true);
           })
           .catch(error => {

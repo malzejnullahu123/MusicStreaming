@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineAlbum, AiOutlinePlaylist, AiOutlineUser } from 'react-icons/ai';
+
+
 import { FaUser } from 'react-icons/fa';
 import SearchBar from "../search/SearchBar";
 import { useAuth } from '../../authContext/AuthContext';
@@ -119,31 +122,47 @@ export const Header = () => {
         </div>
 
         {isMenu && (
-          <div className='bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-16 left-0 w-full '>
-              {isLoggedIn ? (
-                  <ul className='flex flex-col'>
-                    <li className={`mx-5 py-2 ${activeNavLink}`}>
-                      <NavLink to={"/"} onClick={() => setIsMenu(!isMenu)}>Discover</NavLink></li>
-                    <li className={`mx-5 py-2  ${activeNavLink}`}>
-                      <NavLink to={"/Albums"} onClick={() => setIsMenu(!isMenu)}>Albums</NavLink></li>
-                    <li className={`mx-5 py-2  ${activeNavLink}`}>
-                      <NavLink to={"/Playlists"} onClick={() => setIsMenu(!isMenu)}>Playlists</NavLink></li>
-                    <li className={`mx-5 py-2  ${activeNavLink}`}>
-                      <NavLink to={"/Artists"} onClick={() => setIsMenu(!isMenu)}>Artists</NavLink></li>
-                    <li className={`mx-5 py-2  ${activeNavLink}`}>
-                      <NavLink to={`/profile/${userId}`} onClick={() => setIsMenu(!isMenu)}>Profile</NavLink></li>
-                  </ul>
+ <div className='bg-gray-50 shadow-md rounded-lg flex flex-col absolute top-16 left-0 w-full p-4'>
+    {isLoggedIn ? (
+      <ul className='flex flex-col space-y-2'>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Discover</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/Albums"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Albums</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/Playlists"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Playlists</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/Artists"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Artists</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={`/profile/${userId}`} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Profile</NavLink>
+        </li>
+      </ul>
+    ) : (
+      <ul className='flex flex-col space-y-2'>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Discover</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/Albums"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Albums</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/Playlists"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Playlists</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/Artists"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Artists</NavLink>
+        </li>
+        <li className={`mx-5 py-2 ${activeNavLink}`}>
+          <NavLink to={"/login"} onClick={() => setIsMenu(!isMenu)} className='text-lg font-semibold'>Login</NavLink>
+        </li>
+      </ul>
+    )}
+ </div>
+)}
 
-                // ))
-              ) : (
-                navBarMobile.map((list, i) => (
-                  <li className={`mx-5 py-2 ${activeNavLink}`} key={i}>
-                    <NavLink to={list.path} onClick={() => setIsMenu(!isMenu)}>{list.name}</NavLink>
-                  </li>
-                ))
-              )}
-          </div>
-        )}
 
       </div>
     </header>
