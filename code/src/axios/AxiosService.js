@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuth } from '../authContext/AuthContext'
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5279/',
+  baseURL: 'https://apibeatflow.web.app/',
   timeout: 10000, // Timeout after 10 seconds
   headers: {
     'Content-Type': 'application/json',
