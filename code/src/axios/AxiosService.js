@@ -143,6 +143,13 @@ const ApiService = {
     return apiClient.post(`/api/Artist/register`, data);
   },
 
+  getPlaylistsOfUser(id, pageNumber, pageSize) {
+    return apiClient.get(`/api/Playlist/ofUser/${id}/${pageNumber}/${pageSize}`);
+   },
+   
+   getSongsByArtistId(id, pageNumber, pageSize) {
+    return apiClient.get(`/api/Song/byArtist/${id}/${pageNumber}/${pageSize}`);
+  },
 
 };
 

@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../authContext/AuthContext";
 import { removeToken } from '../axios/AxiosService';
 import ApiService from "../axios/AxiosService";
+import { CardPlaylist } from "../components/common/Card_Playlist";
+
 
 export const Profile = () => {
   const { userId } = useParams();
@@ -16,16 +18,43 @@ export const Profile = () => {
   const [following, setFollowing] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
 
+
+
   const [formData, setFormData] = useState({
     name: "",
     embedImgLink: ""
   });
 
-  //////////////////////////////
+  const [page, setPage] = useState(1);
+  const [playlists, setPlaylists] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  // const saveRoleToLocalStorage = (role) => {
-  //   localStorage.setItem('userRole', role);
-  // };
+  useEffect(() => {
+    fetchPlaylists();
+  }, [page]);
+
+  const fetchPlaylists = async () => {
+    try {
+      const response = await ApiService.getAllPlaylists(page, 3);
+      if (response.data.length === 0) {
+        setHasMore(false); // No more results available
+      } else {
+        setPlaylists((prevPlaylists) => {
+          const newPlaylists = response.data.filter(
+            (playlist) => !prevPlaylists.find((prevPlaylist) => prevPlaylist.playlistId === playlist.playlistId)
+          );
+          return [...prevPlaylists, ...newPlaylists];
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+    }
+  };
+
+  const handleShowMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
 
   useEffect(() => {
     // if (userId == response.data.userId) {
@@ -73,6 +102,18 @@ export const Profile = () => {
       .catch(error => {
         console.error('Error fetching follower counts:', error);
       });
+
+
+      // ApiService.getPlaylistsOfUser(userId, pageNumber, pageSize)
+      // .then(response => {
+      //   setPlaylists(response.data);
+      // })
+      // .catch(error => {
+      //   console.error('Error fetching items:', error);
+      // });
+
+
+
   }, [userId, following]);
 
   const handleSignOut = () => {
@@ -121,6 +162,9 @@ export const Profile = () => {
         .finally(() => {
           setShowPopup(false);
         });
+
+        
+
    };
 
   if (redirect) {
@@ -164,22 +208,43 @@ export const Profile = () => {
         <div className="p-6">
           <h2 className="text-lg font-semibold">My Playlists</h2>
           <div className="grid grid-cols-3 gap-4 mt-4">
-            {/* {playlists.map(playlist => (
-              <div key={playlist.id} className="bg-gray-200 p-6 rounded-lg flex flex-col justify-between" style={{ backgroundImage: `url("${playlist.imageUrl}")`, backgroundSize: 'cover', backgroundPosition: 'center', height: '200px' }}>
-                <p className="text-lg font-semibold text-center">{playlist.name}</p>
-              </div>
-            ))} */}
+            {playlists.map((playlist, i) => (
+              <CardPlaylist
+                key={i}
+                playlistId={playlist.playlistId}
+                name={playlist.name}
+                user_name={playlist.userId}
+                image={playlist.image} // Add this line if you have an 'image' property
+              />
+            ))}
           </div>
+          {hasMore && (
+          <div className="mt-5 text-center">
+            <button onClick={handleShowMore} className="bg-primary text-white px-4 py-2 rounded-full">
+              Show More
+            </button>
+          </div>
+        )}
         </div>
 
+      {role == "artist" && (
         <div className="p-6">
           <h2 className="text-lg font-semibold">{profileInfo.fullName}'s uploads:</h2>
+
+
+
+          //////////// cards of upload
+
           <div className="grid grid-cols-3 gap-4 mt-4">
             <img src="https://via.placeholder.com/150" alt="Placeholder" className="rounded-lg" />
             <img src="https://via.placeholder.com/150" alt="Placeholder" className="rounded-lg" />
             <img src="https://via.placeholder.com/150" alt="Placeholder" className="rounded-lg" />
           </div>
+
+
         </div>
+        )}
+        
       </div>
 
 
