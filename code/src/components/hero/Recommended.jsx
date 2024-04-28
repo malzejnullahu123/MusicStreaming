@@ -3,19 +3,28 @@ import { Card_sm } from "../common/Card_sm"
 import { Title } from "../common/Title"
 import { Card_lg } from "../common/Card_lg"
 import ApiService from "../../axios/AxiosService"
+import { useAuth } from "../../authContext/AuthContext";
+
 
 export const Recommended = () => {
   const [items, setItems] = useState([]);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    ApiService.getRecommendedSongs()
-      .then(response => {
-        setItems(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching items:', error);
-      });
+  {isLoggedIn && (
+      ApiService.getRecommendedSongs()
+        .then(response => {
+          setItems(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching items:', error);
+        })
+      )}
   }, []);
+
+///// kqyre, pa perfundu
+
+
 
   return (
     <>

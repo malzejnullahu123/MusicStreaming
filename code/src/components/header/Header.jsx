@@ -118,7 +118,7 @@ export const Header = () => {
 
         <div className="flex items-center">
           <SearchBar />
-          <AiOutlineMenu size={20} onClick={() => setIsMenu(!isMenu)} />
+          <AiOutlineMenu className="ml-2 pl-1  text-lg" size={20} onClick={() => setIsMenu(!isMenu)} />
         </div>
 
         {isMenu && (

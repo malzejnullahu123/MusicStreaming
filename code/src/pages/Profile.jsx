@@ -5,6 +5,7 @@ import { useAuth } from "../authContext/AuthContext";
 import { removeToken } from '../axios/AxiosService';
 import ApiService from "../axios/AxiosService";
 import { CardPlaylist } from "../components/common/Card_Playlist";
+import { Card_lg } from "../components/common/Card_lg";
 
 
 export const Profile = () => {
@@ -17,6 +18,8 @@ export const Profile = () => {
   const [profileInfo, setProfileInfo] = useState({});
   const [following, setFollowing] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
+  const [showPopupUpload, setShowPopupUpload] = useState(false); // State to control popup visibility
+  const [songs, setSongs] = useState([]);
 
 
 
@@ -35,7 +38,8 @@ export const Profile = () => {
 
   const fetchPlaylists = async () => {
     try {
-      const response = await ApiService.getAllPlaylists(page, 3);
+      console.log(userId)
+      const response = await ApiService.getPlaylistByUserId(userId, page, 3);
       if (response.data.length === 0) {
         setHasMore(false); // No more results available
       } else {
@@ -113,6 +117,15 @@ export const Profile = () => {
       // });
 
 
+      ApiService.getSongsByArtist(userId,1,10)
+      .then(response => {
+        setSongs(response.data);
+        console.log(response.data.title)
+      })
+      .catch(error => {
+        console.error('Error fetching Songs from artist:', error);
+      });
+
 
   }, [userId, following]);
 
@@ -163,9 +176,61 @@ export const Profile = () => {
           setShowPopup(false);
         });
 
-        
-
    };
+   const [formDataa, setFormDataa] = useState({
+    title: '',
+    artistId: userId,
+    genreId: '',
+    embedLink: '',
+    embedIMGLink: ''
+  });
+
+   const handleUpload = () => {
+    setShowPopupUpload(true)
+   };
+   const handleUploadSubmit = (event) => {
+    console.log(formDataa)
+    ///////
+    event.preventDefault();
+    // Perform validation and processing here
+    ApiService.addSong(formDataa)
+        .then(response => {
+          setShowPopupUpload(false);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        })
+        .finally(() => {
+          setShowPopupUpload(false);
+        });
+   };
+   const addNewGenre = async (newGenre) => {
+    try {
+      const response = await ApiService.addNewGenre({
+        name: newGenre
+      });
+      const genreId = response.data.genreId;
+      setGenres([...genres, { id: genreId, name: newGenre }]);
+    } catch (error) {
+      console.error('Error adding new genre:', error);
+    }
+  };
+
+
+  const [genres, setGenres] = useState([]);
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await ApiService.getGenres();
+        setGenres(response.data);
+      } catch (error) {
+        console.error('Error fetching genres:', error);
+      }
+    };
+    fetchGenres();
+  }, []);
+
 
   if (redirect) {
     return <Navigate to="/" />;
@@ -191,9 +256,12 @@ export const Profile = () => {
               </div>
             </div>
           </div>
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col md:flex-row items-center md:items-center space-y-4 md:space-y-0 md:space-x-4">
               {myProfile && role != "artist" && (
                 <button onClick={handleBecomeArtistClick} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Become an Artist</button>
+              )}
+              {myProfile && role == "artist" && (
+                <button onClick={handleUpload} className="bg-green-500 px-6 py-2 text-white rounded-lg flex items-center gap-1 mx-3 hover:bg-green-600">Upload Music</button>
               )}
               {myProfile && (
                 <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Sign Out</button>
@@ -233,13 +301,23 @@ export const Profile = () => {
 
 
 
-          //////////// cards of upload
+          {/* //////////// cards of upload */}
 
-          <div className="grid grid-cols-3 gap-4 mt-4">
-            <img src="https://via.placeholder.com/150" alt="Placeholder" className="rounded-lg" />
-            <img src="https://via.placeholder.com/150" alt="Placeholder" className="rounded-lg" />
-            <img src="https://via.placeholder.com/150" alt="Placeholder" className="rounded-lg" />
-          </div>
+          <section className='hero'>
+        <div className='grid grid-cols-2 md:grid-cols-4 sm:grid-cols-1  gap-5'>
+          {songs.map((song) => (
+            <div className='box card hero' key={song.songId}>
+              <Card_lg
+                songId = {song.songId}
+                embedIMGLink={song.embedIMGLink}
+                title={song.title}
+                embedLink={song.embedLink} // Add anotherLink prop here
+                artistName={song.artistName}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
 
 
         </div>
@@ -248,32 +326,132 @@ export const Profile = () => {
       </div>
 
 
-      {/* popup */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* //popup to become an artist */}
       {showPopup && (
- <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> {/* Added shadow for depth */}
-      <h2 className="text-2xl font-bold mb-4 text-center">Become an Artist</h2> {/* Increased font size and bold for emphasis */}
-      <p className="text-gray-700 mb-6 text-center">Join the community of artists and start sharing your music with the world.</p> {/* Centered text and increased margin for better spacing */}
-      <form className="space-y-6" onSubmit={handleSubmit}> {/* Increased space between form elements */}
-        <div>
-          <label htmlFor="artistName" className="block text-sm font-medium text-gray-700">Artist Name</label>
-          <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} name="artistName" id="artistName" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required />
-        </div>
-        <div>
-          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL</label>
-          <input type="url" value={formData.embedImgLink} onChange={(e) => setFormData({ ...formData, embedImgLink: e.target.value })} name="imageUrl" id="imageUrl" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required />
-        </div>
-        <div className="flex justify-center"> {/* Centered buttons for a cleaner look */}
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> {/* Enhanced button styling */}
-          <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> {/* Enhanced button styling */}
-        </div>
-      </form>
-    </div>
- </div>
-)}
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> {/* Added shadow for depth */}
+            <h2 className="text-2xl font-bold mb-4 text-center">Become an Artist</h2> {/* Increased font size and bold for emphasis */}
+            <p className="text-gray-700 mb-6 text-center">Join the community of artists and start sharing your music with the world.</p> {/* Centered text and increased margin for better spacing */}
+            <form className="space-y-6" onSubmit={handleSubmit}> {/* Increased space between form elements */}
+              <div>
+                <label htmlFor="artistName" className="block text-sm font-medium text-gray-700">Artist Name</label>
+                <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} name="artistName" id="artistName" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required />
+              </div>
+              <div>
+                <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL</label>
+                <input type="url" value={formData.embedImgLink} onChange={(e) => setFormData({ ...formData, embedImgLink: e.target.value })} name="imageUrl" id="imageUrl" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required />
+              </div>
+              <div className="flex justify-center"> {/* Centered buttons for a cleaner look */}
+                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> {/* Enhanced button styling */}
+                <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> {/* Enhanced button styling */}
+              </div>
+            </form>
+          </div>
+      </div>
+      )}
 
 
 
+      {/* popup to upload music */}
+      {showPopupUpload && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg max-w-md shadow-lg">
+            <h2 className="text-2xl font-bold mb-4 text-center">Upload Music</h2> 
+            <p className="text-gray-700 mb-6 text-center">Join the community of artists and start sharing your music with the world.</p>
+   
+
+            {/* //// */}
+            <form className="space-y-6" onSubmit={handleUploadSubmit}>
+                <div>
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+                  <input
+                    type="text"
+                    value={formDataa.title}
+                    onChange={(e) => setFormDataa({ ...formDataa, title: e.target.value })}
+                    name="title"
+                    id="title"
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                <label htmlFor="genreId" className="block text-sm font-medium text-gray-700">Genre</label>
+                <div className="flex items-center">
+                  <select
+                    value={formDataa.genreId}
+                    onChange={(e) => setFormDataa({ ...formDataa, genreId: e.target.value })}
+                    name="genreId"
+                    id="genreId"
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="" disabled>Select a genre</option>
+                    {genres.map((genre) => (
+                      <option key={genre.id} value={genre.id}>{genre.name}</option>
+                    ))}
+                  </select>
+                  <button type="button"
+                    onClick={async () => {
+                      const newGenre = prompt('Enter a new genre:');
+                      if (newGenre) {
+                        const genreId = await addNewGenre(newGenre);
+                        if (genreId) {
+                          setFormDataa({ ...formDataa, genreId: genreId });
+                        }
+                      }
+                    }} className="ml-2 bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Add Genre
+                  </button>
+                </div>
+              </div>
+                <div>
+                  <label htmlFor="embedLink" className="block text-sm font-medium text-gray-700">Embed Link</label>
+                  <input
+                    type="url"
+                    value={formDataa.embedLink}
+                    onChange={(e) => setFormDataa({ ...formDataa, embedLink: e.target.value })}
+                    name="embedLink"
+                    id="embedLink"
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="embedIMGLink" className="block text-sm font-medium text-gray-700">Image URL</label>
+                  <input
+                    type="url"
+                    value={formDataa.embedIMGLink}
+                    onChange={(e) => setFormDataa({ ...formDataa, embedIMGLink: e.target.value })}
+                    name="embedIMGLink"
+                    id="embedIMGLink"
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+                  <button onClick={() => setShowPopupUpload(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button>
+                </div>
+              </form>
+
+
+
+          </div>
+      </div>
+      )}
     </div>
   );
 };

@@ -2,7 +2,8 @@ import axios from 'axios';
 import { useAuth } from '../authContext/AuthContext'
 
 const apiClient = axios.create({
-  baseURL: 'https://apibeatflow.web.app/',
+  // baseURL: 'https://apibeatflow.web.app/',
+  baseURL: 'http://localhost:5279/',
   timeout: 10000, // Timeout after 10 seconds
   headers: {
     'Content-Type': 'application/json',
@@ -31,8 +32,8 @@ const ApiService = {
     return apiClient.get(`/api/Song/new?pageSize=${pageSize}`);
   },
 
-  getSongsByArtist(artistId) {
-    return apiClient.get(`/api/Song/byArtist/${artistId}`);
+  getSongsByArtist(artistId, pageNumber, pageSize) {
+    return apiClient.get(`/api/Song/byArtist/${artistId}/${pageNumber}/${pageSize}`);
   },
 
   getArtistById(id) {
@@ -100,7 +101,7 @@ const ApiService = {
   },
 
   getAllPlaylists(pageNumber, pageSize) {
-    return apiClient.get(`/api/Playlist/all/${pageNumber}/${pageSize}`);
+    return apiClient.get(`/api/Playlist/allVisible/${pageNumber}/${pageSize}`);
   },
 
   getSongsOfPlaylist(playlistId) {
@@ -149,6 +150,26 @@ const ApiService = {
    
    getSongsByArtistId(id, pageNumber, pageSize) {
     return apiClient.get(`/api/Song/byArtist/${id}/${pageNumber}/${pageSize}`);
+  },
+
+  addNewGenre(data) {
+    return apiClient.post(`/api/Genre`, data);
+  },
+
+  getGenres() {
+    return apiClient.get(`/api/Genre/all`);
+  },
+
+  addSong(data) {
+    return apiClient.post(`/api/Song`, data);
+  },
+
+  getPlaylistByArtist(id, pageNumber, pageSize) {
+    return apiClient.get(`/api/Playlist/ofUser/${id}/${pageNumber}/${pageSize}`);
+  },
+
+  getPlaylistByUserId(id, pageNumber, pageSize) {
+    return apiClient.get(`/api/Playlist/ofUser/${id}/${pageNumber}/${pageSize}`);
   },
 
 };

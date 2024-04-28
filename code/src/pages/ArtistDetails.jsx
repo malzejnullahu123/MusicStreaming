@@ -8,13 +8,35 @@ export const ArtistDetails = () => {
   const [artist, setArtist] = useState(null);
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [following, setFollowing] = useState(false);
+
+  const handleFollow = () => {
+    if (following) {
+      ApiService.unfollowUser(artistId)
+        .then(response => {
+          setFollowing(false);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    } else {
+      ApiService.followUser(artistId)
+        .then(response => {
+          setFollowing(true);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [artistResponse, songsResponse] = await Promise.all([
           ApiService.getArtistById(artistId),
-          ApiService.getSongsByArtist(artistId)
+          ApiService.getSongsByArtist(artistId,page,10)
         ]);
         setArtist(artistResponse.data);
         setSongs(songsResponse.data);
@@ -26,7 +48,7 @@ export const ArtistDetails = () => {
     };
 
     fetchData();
-  }, [artistId]);
+  }, [artistId, page]);
 
   useEffect(() => {
     const fetchGenreNames = async () => {
@@ -56,15 +78,29 @@ export const ArtistDetails = () => {
     }
   }, [songs]);
 
+  const handleShowMore = () => {
+    setPage(page+1);
+  };
+  const handleShowLess = () => {
+    if(page > 1) {
+      setPage(page-1);
+    }
+  };
+
+
   return (
     <div className="container mx-auto p-4 bg-gradient-to-r from-gray-200 to-gray-100 rounded-lg shadow-lg">
       {loading ? (
         <p>Loading...</p>
       ) : artist ? (
-        <div className="p-6">
+        <div className="flex flex-col justify-center">
+
+          <div className="p-6">
           <div className="flex justify-between">
           <h1 className="text-3xl font-bold mb-4">{artist.name}</h1>
-          <button className="mr-7">test</button>
+          <button onClick={handleFollow} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                  {following ? "Following" : "Follow"}
+                </button>
           </div>
           
 
@@ -79,13 +115,17 @@ export const ArtistDetails = () => {
                 embedLink={song.embedLink}
                 artistName={artist.name}
                 show={true}
-                i={index}
-              />
-            ))}
+                i={index}/>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleShowLess}>Show less</button>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"onClick={handleShowMore}>Show more</button>
           </div>
         </div>
       ) : (
-        <p></p>
+        <p>no song for this artist</p>
       )}
     </div>
   );

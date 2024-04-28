@@ -45,6 +45,7 @@ export const Playlists = () => {
               name={playlist.name}
               user_name={playlist.userId}
               image={playlist.image} // Add this line if you have an 'image' property
+              visibility={playlist.isVisible}
             />
           ))}
         </div>

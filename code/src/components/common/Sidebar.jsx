@@ -7,6 +7,20 @@ export const Sidebar = () => {
   const [items, setItems] = useState([]);
   const { isLoggedIn } = useAuth();
   
+  // const { isLoggedIn } = useAuth();
+
+  // useEffect(() => {
+  //   {isLoggedIn && (
+  //     ApiService.getPlayHistory(localStorage.getItem('token'))
+  //       .then(response => {
+  //         setItems(response.data);
+  //       })
+  //       .catch(error => {
+  //         console.error('Error fetching items:', error);
+  //       })
+  //   )}
+  // }, []);
+
 
   useEffect(() => {
     if (isLoggedIn) {

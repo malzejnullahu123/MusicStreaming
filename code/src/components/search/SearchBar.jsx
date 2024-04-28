@@ -25,7 +25,7 @@ const SearchBar = () => {
         onChange={(e) => setQuery(e.target.value)}
         className="px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
       />
-      <button type="submit" className="ml-2 p-1 rounded-full bg-primary text-white hover:bg-primary-dark focus:outline-none">
+      <button type="submit" className="ml-2 p-1 rounded-full bg-primary text-white hidden md:block hover:bg-primary-dark focus:outline-none">
         <AiOutlineSearch />
       </button>
     </form>

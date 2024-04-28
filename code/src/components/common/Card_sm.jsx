@@ -48,7 +48,6 @@ export const Card_sm = ({ songId, embedIMGLink, title, genre, embedLink, artistN
         </div>
         <div className='overlay absolute bottom-0 right-0 text-secondary'>
           <div className='flex p-3'>
-            <AiOutlineHeart size={22} className='mx-3' />
             <BsThreeDots size={22} />
           </div>
         </div>
