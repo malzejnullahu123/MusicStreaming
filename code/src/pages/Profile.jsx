@@ -17,8 +17,8 @@ export const Profile = () => {
   const [myProfile, setMyProfile] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
   const [following, setFollowing] = useState(false);
-  const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
-  const [showPopupUpload, setShowPopupUpload] = useState(false); // State to control popup visibility
+  const [showPopup, setShowPopup] = useState(false);
+  const [showPopupUpload, setShowPopupUpload] = useState(false);
   const [songs, setSongs] = useState([]);
 
 
@@ -274,7 +274,8 @@ export const Profile = () => {
               )}
             </div>
           </div>
-        <div className="p-6">
+        {(following || myProfile) &&
+          <div className="p-6">
           <h2 className="text-lg font-semibold">My Playlists</h2>
           <div className="grid grid-cols-3 gap-4 mt-4">
             {playlists.map((playlist, i) => (
@@ -294,10 +295,11 @@ export const Profile = () => {
               Show More
             </button>
           </div>
-        )}
+          )}
         </div>
+        }
 
-      {role == "artist" && (
+      {(role == "artist" || following ) &&(
         <div className="p-6">
           <h2 className="text-lg font-semibold">{profileInfo.fullName}'s uploads:</h2>
 

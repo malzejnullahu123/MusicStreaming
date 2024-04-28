@@ -24,7 +24,7 @@ export const CardPlaylist = ({ playlistId, name, user_name, image, visibility })
           <h2 className="text-lg font-bold mb-6">{name}</h2>
           <p className="text-xs text-gray-500 mt-2">Owner: {ownerName}</p>
           <div className="flex justify-between">
-            <p>{visibility ? "Visible" : "Not Visible"}</p>
+            <p>{visibility ? "Visible to public" : "Followers only"}</p>
             <p>{visibility ? <AiFillEye /> : <AiFillEyeInvisible />}</p>
           </div>
 
