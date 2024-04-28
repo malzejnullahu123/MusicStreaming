@@ -244,7 +244,8 @@ export const SearchComp = () => {
                   playlistId={item.playlistId}
                   name={item.name}
                   user_name={item.userId}
-                  image={item.image} // Add this line if you have an 'image' property
+                  image={item.image}
+                  visibility={item.isVisible}
                 />
               </div>
             ))}

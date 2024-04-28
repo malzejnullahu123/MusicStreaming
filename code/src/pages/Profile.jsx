@@ -223,7 +223,8 @@ export const Profile = () => {
     const fetchGenres = async () => {
       try {
         const response = await ApiService.getGenres();
-        setGenres(response.data);
+        // Assuming response.data is an array of genre objects
+        setGenres(response.data.map(genre => ({ id: genre.genreId, name: genre.name })));
       } catch (error) {
         console.error('Error fetching genres:', error);
       }
@@ -282,7 +283,8 @@ export const Profile = () => {
                 playlistId={playlist.playlistId}
                 name={playlist.name}
                 user_name={playlist.userId}
-                image={playlist.image} // Add this line if you have an 'image' property
+                image={playlist.image}
+                visibility={playlist.isVisible}
               />
             ))}
           </div>
@@ -370,7 +372,7 @@ export const Profile = () => {
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded-lg max-w-md shadow-lg">
             <h2 className="text-2xl font-bold mb-4 text-center">Upload Music</h2> 
-            <p className="text-gray-700 mb-6 text-center">Join the community of artists and start sharing your music with the world.</p>
+            <p className="text-gray-700 mb-6 text-center">Share your melodies with the world and let your music shine.</p>
    
 
             {/* //// */}
@@ -390,19 +392,20 @@ export const Profile = () => {
                 <div>
                 <label htmlFor="genreId" className="block text-sm font-medium text-gray-700">Genre</label>
                 <div className="flex items-center">
-                  <select
-                    value={formDataa.genreId}
-                    onChange={(e) => setFormDataa({ ...formDataa, genreId: e.target.value })}
-                    name="genreId"
-                    id="genreId"
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    required
-                  >
-                    <option value="" disabled>Select a genre</option>
-                    {genres.map((genre) => (
-                      <option key={genre.id} value={genre.id}>{genre.name}</option>
-                    ))}
-                  </select>
+
+                <select
+                  value={formDataa.genreId}
+                  onChange={(e) => setFormDataa({ ...formDataa, genreId: e.target.value })}
+                  name="genreId"
+                  id="genreId"
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  required
+                >
+                  <option value="" disabled>Select a genre</option>
+                  {genres.map((genre) => (
+                    <option key={genre.id} value={genre.id}>{genre.name}</option>
+                  ))}
+                </select>
                   <button type="button"
                     onClick={async () => {
                       const newGenre = prompt('Enter a new genre:');

@@ -39,7 +39,6 @@ export const Sidebar = () => {
       <section className='sidebar hero'>
         <h1 className='mb-5 text-lg font-semibold text-gray-600'>Recently listened</h1>
         {items.slice(0, 5).map((item, index) => {
-          console.log(item.song.embedIMGLink); // Check if embedIMGLink is present
           return (
             <Card_sm
               key={index}
