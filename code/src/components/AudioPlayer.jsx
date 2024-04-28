@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AudioPlayer = ({ embedIMGLink, title, artistName, embedLinkembedLink }) => {
+const AudioPlayer = ({ embedIMGLink, title, artistName, embedLink }) => {
 
   return (
     <div
