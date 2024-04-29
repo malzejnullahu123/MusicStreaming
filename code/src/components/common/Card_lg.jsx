@@ -86,16 +86,39 @@ export const Card_lg = ({ songId, embedIMGLink, title, embedLink, artistName }) 
 
   const [playlists, setPlaylists] = useState([]);
 
-  useEffect(() => {
-    ApiService.getMyPlaylists(1,50)
+  // useEffect(() => {
+  //   const token = localStorage.getItem("Authorization")
+  //   ApiService.getMyPlaylists(token,1,50)
+  //     .then(response => {
+  //       console.log(response.data)
+  //       setPlaylists(response.data.map(playlist => ({ id: playlist.playlistId, name: playlist.name })));
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching items:', error);
+  //     });
+  // }, [showPopup]);
+
+  const fetchPlaylists = () => {
+    const pageNumber = 1;
+    const pageSize = 50;
+    const token = localStorage.getItem("Authorization");
+    ApiService.getMyPlaylistsss(pageNumber, pageSize)
       .then(response => {
+        console.log(response.data);
         setPlaylists(response.data.map(playlist => ({ id: playlist.playlistId, name: playlist.name })));
       })
       .catch(error => {
-        console.error('Error fetching items:', error);
+        console.error('Error fetching items: heeeeeee', error);
       });
-  }, []);
+  };
+  
+  useEffect(() => {
+    if (showPopup) {
+      fetchPlaylists();
+    }
+  }, [showPopup]);
 
+  
   return (
     <>
       <div className="img relative h-72">
@@ -115,9 +138,11 @@ export const Card_lg = ({ songId, embedIMGLink, title, embedLink, artistName }) 
                 <li className="dropdown-item hover:bg-gray-200 flex items-center justify-between" onClick={() => handleDropdownOptionClick("Share on Instagram")}>
                   <span>Share on Instagram</span>
                 </li>
-                <li className="dropdown-item hover:bg-gray-200 flex items-center justify-between" onClick={() => setShowPopup("Add to playlist")}>
-                  <span>Add to playlist</span>
-                </li>
+                {isLoggedIn && (
+                  <li className="dropdown-item hover:bg-gray-200 flex items-center justify-between" onClick={() => setShowPopup("Add to playlist")}>
+                    <span>Add to playlist</span>
+                  </li>
+                )}
                 <li className="dropdown-item hover:bg-gray-200 flex items-center justify-between" onClick={() => handleDropdownOptionClick("Copy Link")}>
                   <span>Copy Link</span>
                 </li>

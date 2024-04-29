@@ -44,35 +44,48 @@ export const AlbumDetails = () => {
 
 
     const [formData, setFormData] = useState({
-        name: ""
+        songId: "",
+        title: ""
       });
-    const [showPopup, setShowPopup] = useState(false);
+    const [showPopupp, setShowPopupp] = useState(false);
 
     const handleShowPopup = () => {
-      setShowPopup(true);
+        setShowPopupp(true);
     };
   
     const handleCreate = async (event) => {
       event.preventDefault();
-    //   try {
-    //     const response = await ApiService.addNewAlbum(formData);
-    //     setShowPopup(false);
-    //   } catch (error) {
-    //     console.error('Error creating playlist:', error);
-    //   }
+      try {
+        console.log(formData.songId)
+        const response = await ApiService.addSongToAlbum(albumId, formData.songId);
+        setShowPopupp(false);
+      } catch (error) {
+        console.error('Error creating playlist:', error);
+      }
     };
 
-    const [playlists, setPlaylists] = useState([]);
+    const [chosenSongs, setChosenSongs] = useState([]);
 
 
     useEffect(() => {
-        ApiService.getMyPlaylists(1,50)
-          .then(response => {
-            setPlaylists(response.data.map(playlist => ({ id: playlist.playlistId, name: playlist.name })));
-          })
-          .catch(error => {
-            console.error('Error fetching items:', error);
-          });
+        ApiService.me(token)
+        .then(response => {
+        
+            ApiService.getSongsByArtistId(response.data.userId, 1,50)
+            .then(response => {
+              setChosenSongs(response.data.map(song => ({ songId: song.songId, title: song.title })));
+            })
+            .catch(error => {
+              console.error('Error fetching items:', error);
+            });
+
+
+        })
+        .catch(error => {
+            console.error('Error fetching songs:', error);
+        });
+
+
       }, []);
   
 
@@ -109,24 +122,30 @@ export const AlbumDetails = () => {
 
 
 
-        {showPopup && (
+        {showPopupp && (
             <div className="z-10 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-8 rounded-lg max-w-md shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-center">Create your own playlist</h2>
+                <h2 className="text-2xl font-bold mb-4 text-center">Add music to your album</h2>
                 <p className="text-gray-700 mb-6 text-center">Unleash your musical flair! Craft your own playlist and let your favorite tunes take center stage.</p>
                 <form className="space-y-6" onSubmit={handleCreate}>
                     <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Choose Playlist</label>
-                    <select value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} name="name" id="name" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required>
-                        <option value="">Select a playlist</option>
-                        {playlists.map(playlist => (
-                        <option key={playlist.id} value={playlist.id}>{playlist.name}</option>
-                        ))}
-                    </select>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Choose Songs</label>
+                        <select value={formData.songId} onChange={(e) => setFormData({ ...formData, songId: e.target.value })}
+                            name="songId"
+                            id="songId"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            required >
+                            <option value="">Select a song</option>
+                            {chosenSongs.map((chosenSong) => (
+                                <option key={chosenSong.songId} value={chosenSong.songId}>
+                                {chosenSong.title}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div className="flex justify-center">
                     <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
-                    <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button>
+                    <button onClick={() => setShowPopupp(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button>
                     </div>
                 </form>
                 </div>

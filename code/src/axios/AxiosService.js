@@ -176,7 +176,7 @@ const ApiService = {
     return apiClient.post(`/api/Playlist`, data);
   },
 
-  getMyPlaylists(pageNumber, pageSize) {
+  getMyPlaylistsss(pageNumber, pageSize) {
     return apiClient.get(`/api/Playlist/mine/${pageNumber}/${pageSize}`);
   },
 
@@ -186,6 +186,10 @@ const ApiService = {
 
   addNewAlbum(data) {
     return apiClient.post(`/api/Album/Register`, data);
+  },
+
+  addSongToAlbum(albumId, songId) {
+    return apiClient.post(`/api/Album/${albumId}/songs/${songId}`);
   },
 
 };

@@ -12,7 +12,8 @@ export const Profile = () => {
   const { userId } = useParams();
   const { isLoggedIn, logout } = useAuth();
   const [redirect, setRedirect] = useState(false);
-  const [role, setRole] = useState([localStorage.getItem('userRole')]);
+  // const [role, setRole] = useState([localStorage.getItem('userRole')]);
+  const [role, setRole] = useState([]);
   const [followerCounts, setFollowerCounts] = useState({ followerCount: 0, followingCount: 0 });
   const [myProfile, setMyProfile] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
@@ -77,6 +78,7 @@ export const Profile = () => {
         // saveRoleToLocalStorage(response.data.role)
         if (userId == response.data.userId) {
           setMyProfile(true);
+          setRole(response.data.role)
         } else {
           ApiService.checkIfIsFollowing(userId)
             .then(response => {
@@ -165,8 +167,8 @@ export const Profile = () => {
     ApiService.registerAsArtist(formData)
         .then(response => {
           setShowPopup(false);
-          setRole('artist')
-          localStorage.setItem('userRole', 'artist');
+          // setRole('artist')
+          // localStorage.setItem('userRole', 'artist');
           console.log("resigtered as artist succesfully")
         })
         .catch(error => {

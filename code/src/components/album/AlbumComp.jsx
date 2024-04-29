@@ -7,11 +7,20 @@ export const AlbumComp = () => {
   const [page, setPage] = useState(1);
   const [albums, setAlbums] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const role = localStorage.getItem('userRole');
+  // const role = localStorage.getItem('userRole');
+  const [role, setRole] = useState([]);
+
 
 
   useEffect(() => {
     fetchAlbums();
+    ApiService.me(localStorage.getItem('token'))
+    .then(response => {
+      setRole(response.data.role);
+    })
+    .catch(error => {
+      console.error('Error fetching items:', error);
+    });
   }, [page]);
 
   const fetchAlbums = async () => {

@@ -16,13 +16,13 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
     // setUserId(userId);
     localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userRole', role);
+    // localStorage.setItem('userRole', role);
   };
 
   const logout = () => {
     setIsLoggedIn(false);
     localStorage.setItem('isLoggedIn', 'false');
-    localStorage.removeItem('userRole');
+    // localStorage.removeItem('userRole');
   };
 
   return (
