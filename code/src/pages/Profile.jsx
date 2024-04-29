@@ -262,7 +262,7 @@ export const Profile = () => {
                 <button onClick={handleBecomeArtistClick} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Become an Artist</button>
               )}
               {myProfile && role == "artist" && (
-                <button onClick={handleUpload} className="bg-green-500 px-6 py-2 text-white rounded-lg flex items-center gap-1 mx-3 hover:bg-green-600">Upload Music</button>
+                <button onClick={handleUpload} className="bg-primary px-6 py-2 text-white rounded-lg flex items-center gap-1 mx-3 hover:bg-green-600">Upload Music</button>
               )}
               {myProfile && (
                 <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Sign Out</button>

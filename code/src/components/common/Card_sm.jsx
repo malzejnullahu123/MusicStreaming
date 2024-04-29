@@ -12,6 +12,7 @@ export const Card_sm = ({ songId, embedIMGLink, title, genre, embedLink, artistN
   const { isLoggedIn } = useAuth();
 
   const handlePlayClick = () => {
+    console.log(embedLink, embedIMGLink)
     const audio = document.querySelector("audio");
     if (audio) {
       audio.pause();
@@ -48,7 +49,7 @@ export const Card_sm = ({ songId, embedIMGLink, title, genre, embedLink, artistN
         </div>
         <div className='overlay absolute bottom-0 right-0 text-secondary'>
           <div className='flex p-3'>
-            <BsThreeDots size={22} />
+
           </div>
         </div>
         <div className='text'>

@@ -36,7 +36,10 @@ export const AlbumComp = () => {
   return (
     <>
       <section className='hero mt-8 sm:mt-20'>
-        <h1 className='text-5xl font-bold mb-5 text-primary'>Album</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className='text-5xl font-bold mb-5 text-primary'>Album</h1>
+          <button className="bg-primary text-white px-4 p-1.5 rounded-full">Add Album</button>
+        </div>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
           {albums.map((album, i) => (
             <CardAlbum

@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useAuth } from '../authContext/AuthContext'
 
 const apiClient = axios.create({
-  baseURL: 'https://apibeatflow.web.app/',
-  // baseURL: 'http://localhost:5279/',
+  // baseURL: 'https://apibeatflow.web.app/',
+  baseURL: 'http://localhost:5279/',
   timeout: 10000, // Timeout after 10 seconds
   headers: {
     'Content-Type': 'application/json',
@@ -170,6 +170,18 @@ const ApiService = {
 
   getPlaylistByUserId(id, pageNumber, pageSize) {
     return apiClient.get(`/api/Playlist/ofUser/${id}/${pageNumber}/${pageSize}`);
+  },
+
+  createPlaylist(data) {
+    return apiClient.post(`/api/Playlist`, data);
+  },
+
+  getMyPlaylists(pageNumber, pageSize) {
+    return apiClient.get(`/api/Playlist/mine/${pageNumber}/${pageSize}`);
+  },
+
+  addSongInPlaylist(playlistId, songId) {
+    return apiClient.post(`/api/Playlist/${playlistId}/add-song/${songId}`);
   },
 
 };

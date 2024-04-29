@@ -30,6 +30,11 @@ export const Playlists = () => {
     }
   };
 
+  const handleShowMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+
   // {
   //   "name": "string",
   //   "userId": 0,
@@ -41,7 +46,7 @@ export const Playlists = () => {
   const [formData, setFormData] = useState({
     name: "",
     image: "",
-    isVisible: ""
+    isVisible: false
   });
 
 
@@ -49,20 +54,25 @@ export const Playlists = () => {
     setShowPopup(true);
   };
   
-  const handleCreate = () => {
-    ///////qitu
+  const handleCreate = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await ApiService.createPlaylist(formData);
+      console.log("success", response.data);
+      setShowPopup(false);
+    } catch (error) {
+      console.error('Error creating playlist:', error);
+    }
   };
+  
 
-  const handleShowMore = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
 
   return (
     <>
       <section className="hero mt-8 sm:mt-20">
-        <div className="flex justify-between mb-6">
+        <div className="flex justify-between items-center mb-4">
         <h1 className="text-5xl font-bold mb-5 text-primary">Public playlists</h1>
-        <button className="bg-primary text-white px-4 rounded-full" onClick={handleShowPopup}>Create your own Playlist</button>
+        <button className="bg-primary text-white px-4 p-1.5 rounded-full" onClick={handleShowPopup}>Create your own Playlist</button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {playlists.map((playlist, i) => (
@@ -76,13 +86,13 @@ export const Playlists = () => {
             />
           ))}
         </div>
-        {hasMore && (
+          {hasMore && (
           <div className="mt-5 text-center">
             <button onClick={handleShowMore} className="bg-primary text-white px-4 py-2 rounded-full">
               Show More
             </button>
           </div>
-        )}
+          )}
       </section>
 
 
