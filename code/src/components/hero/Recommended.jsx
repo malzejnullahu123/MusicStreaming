@@ -29,7 +29,7 @@ export const Recommended = () => {
   return (
     <>
       <section className='hero mt-7 pb-32'>
-        <Title title='Recommand for you' />
+        <Title title='Recommended for you' />
         <div className='grid grid-cols-2 griw-rows-2 md:grid-cols-4 sm:grid-cols-1  gap-5'>
           {items.map((item) => (
             <div className='card hero' key={item.songId}>
