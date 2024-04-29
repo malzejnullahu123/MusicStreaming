@@ -27,7 +27,7 @@ export const New = () => {
                 songId = {item.songId}
                 embedIMGLink={item.embedIMGLink}
                 title={item.title}
-                embedLink={item.embedLink} // Add anotherLink prop here
+                embedLink={item.embedLink} 
                 artistName={item.artistName}
               />
             </div>

@@ -8,8 +8,7 @@ const SearchBar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Check if query is not empty after trimming whitespace
-    // and does not start with a slash or backslash
+    
     if (query.trim() !== "" && !/^[\/\\]/.test(query.trim())) {
       navigate(`/search/${query}`);
       setQuery("");

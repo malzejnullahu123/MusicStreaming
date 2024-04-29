@@ -6,7 +6,7 @@ import AudioPlayer from "../components/AudioPlayer";
 export const SongDetails = () => {
     const { songId } = useParams();
     const [item, setItem] = useState({});
-    const [showPlayer, setShowPlayer] = useState(false); // State variable to manage player visibility
+    const [showPlayer, setShowPlayer] = useState(false);
 
     useEffect(() => {
         ApiService.getSongById(songId)

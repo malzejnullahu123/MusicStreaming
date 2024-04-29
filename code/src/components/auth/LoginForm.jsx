@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import ApiService from '../../axios/AxiosService';
 import logo from '../../components/assets/images/logo.png';
-import { useAuth } from '../../authContext/AuthContext'; // Import useAuth hook
+import { useAuth } from '../../authContext/AuthContext';
 import { Navigate } from "react-router-dom";
 import { setToken } from '../../axios/AxiosService';
 
 export const LoginForm = () => {
   const [redirect, setRedirect] = useState(false);
-  const [userId, setUserId] = useState(); // State to store userId
+  const [userId, setUserId] = useState(); 
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
   
   const [error, setError] = useState(null);
-  const { login } = useAuth(); // Get login function from useAuth hook
+  const { login } = useAuth(); 
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -35,7 +35,7 @@ export const LoginForm = () => {
         ApiService.me(token)
           .then(response => {
             // console.log(role)
-            setUserId(response.data.userId); // Store userId in state
+            setUserId(response.data.userId);
             login(response.data.role);
             setRedirect(true);
           })

@@ -42,7 +42,7 @@ export const Profile = () => {
       console.log(userId)
       const response = await ApiService.getPlaylistByUserId(userId, page, 3);
       if (response.data.length === 0) {
-        setHasMore(false); // No more results available
+        setHasMore(false); 
       } else {
         setPlaylists((prevPlaylists) => {
           const newPlaylists = response.data.filter(
@@ -158,12 +158,11 @@ export const Profile = () => {
   };
 
   const handleBecomeArtistClick = () => {
-    setShowPopup(true); // Open the popup
+    setShowPopup(true); 
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Perform validation and processing here
     ApiService.registerAsArtist(formData)
         .then(response => {
           setShowPopup(false);
@@ -194,7 +193,6 @@ export const Profile = () => {
     console.log(formDataa)
     ///////
     event.preventDefault();
-    // Perform validation and processing here
     ApiService.addSong(formDataa)
         .then(response => {
           setShowPopupUpload(false);
@@ -225,7 +223,6 @@ export const Profile = () => {
     const fetchGenres = async () => {
       try {
         const response = await ApiService.getGenres();
-        // Assuming response.data is an array of genre objects
         setGenres(response.data.map(genre => ({ id: genre.genreId, name: genre.name })));
       } catch (error) {
         console.error('Error fetching genres:', error);
@@ -317,7 +314,7 @@ export const Profile = () => {
                 songId = {song.songId}
                 embedIMGLink={song.embedIMGLink}
                 title={song.title}
-                embedLink={song.embedLink} // Add anotherLink prop here
+                embedLink={song.embedLink} 
                 artistName={song.artistName}
               />
             </div>
@@ -348,10 +345,10 @@ export const Profile = () => {
       {/* //popup to become an artist */}
       {showPopup && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> {/* Added shadow for depth */}
-            <h2 className="text-2xl font-bold mb-4 text-center">Become an Artist</h2> {/* Increased font size and bold for emphasis */}
-            <p className="text-gray-700 mb-6 text-center">Join the community of artists and start sharing your music with the world.</p> {/* Centered text and increased margin for better spacing */}
-            <form className="space-y-6" onSubmit={handleSubmit}> {/* Increased space between form elements */}
+          <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> 
+            <h2 className="text-2xl font-bold mb-4 text-center">Become an Artist</h2> 
+            <p className="text-gray-700 mb-6 text-center">Join the community of artists and start sharing your music with the world.</p> 
+            <form className="space-y-6" onSubmit={handleSubmit}> 
               <div>
                 <label htmlFor="artistName" className="block text-sm font-medium text-gray-700">Artist Name</label>
                 <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} name="artistName" id="artistName" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required />
@@ -360,9 +357,9 @@ export const Profile = () => {
                 <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL</label>
                 <input type="url" value={formData.embedImgLink} onChange={(e) => setFormData({ ...formData, embedImgLink: e.target.value })} name="imageUrl" id="imageUrl" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required />
               </div>
-              <div className="flex justify-center"> {/* Centered buttons for a cleaner look */}
-                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> {/* Enhanced button styling */}
-                <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> {/* Enhanced button styling */}
+              <div className="flex justify-center"> 
+                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> 
+                <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> 
               </div>
             </form>
           </div>

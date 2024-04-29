@@ -27,7 +27,7 @@ export const AlbumComp = () => {
     try {
       const response = await ApiService.getAllAlbums(page, 3);
       if (response.data.length === 0) {
-        setHasMore(false); // No more results available
+        setHasMore(false);
       } else {
         setAlbums((prevAlbums) => {
           const newAlbums = response.data.filter(album => !prevAlbums.find(prevAlbum => prevAlbum.albumId === album.albumId));
@@ -106,9 +106,9 @@ export const AlbumComp = () => {
 
       {showPopup && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> {/* Added shadow for depth */}
-          <h2 className="text-2xl font-bold mb-4 text-center">Add Album</h2> {/* Increased font size and bold for emphasis */}
-          <p className="text-gray-700 mb-6 text-center">Unleash your musical flair! Craft your own playlist and let your favorite tunes take center stage.</p> {/* Centered text and increased margin for better spacing */}
+        <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> 
+          <h2 className="text-2xl font-bold mb-4 text-center">Add Album</h2>
+          <p className="text-gray-700 mb-6 text-center">Unleash your musical flair! Craft your own album.</p> 
           <form className="space-y-6" onSubmit={handleCreate}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Albume title</label>
@@ -120,8 +120,8 @@ export const AlbumComp = () => {
             </div>
 
             <div className="flex justify-center"> 
-              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> {/* Enhanced button styling */}
-              <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> {/* Enhanced button styling */}
+              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> 
+              <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> 
             </div>
           </form>
         </div>

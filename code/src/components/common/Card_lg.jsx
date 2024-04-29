@@ -66,7 +66,7 @@ export const Card_lg = ({ songId, embedIMGLink, title, embedLink, artistName }) 
 
   const handleCreate = async (event) => {
     event.preventDefault();
-    const selectedPlaylistId = formData.name;  // Access the selected ID
+    const selectedPlaylistId = formData.name; 
     console.log("Selected Playlist ID:", selectedPlaylistId);
 
     try {

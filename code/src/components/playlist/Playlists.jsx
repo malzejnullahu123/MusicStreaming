@@ -17,7 +17,7 @@ export const Playlists = () => {
     try {
       const response = await ApiService.getAllPlaylists(page, 3);
       if (response.data.length === 0) {
-        setHasMore(false); // No more results available
+        setHasMore(false); 
       } else {
         setPlaylists((prevPlaylists) => {
           const newPlaylists = response.data.filter(
@@ -103,10 +103,10 @@ export const Playlists = () => {
 
       {showPopup && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> {/* Added shadow for depth */}
-          <h2 className="text-2xl font-bold mb-4 text-center">Create your own playlist</h2> {/* Increased font size and bold for emphasis */}
-          <p className="text-gray-700 mb-6 text-center">Unleash your musical flair! Craft your own playlist and let your favorite tunes take center stage.</p> {/* Centered text and increased margin for better spacing */}
-          <form className="space-y-6" onSubmit={handleCreate}> {/* Increased space between form elements */}
+        <div className="bg-white p-8 rounded-lg max-w-md shadow-lg"> 
+          <h2 className="text-2xl font-bold mb-4 text-center">Create your own playlist</h2> 
+          <p className="text-gray-700 mb-6 text-center">Unleash your musical flair! Craft your own playlist and let your favorite tunes take center stage.</p> 
+          <form className="space-y-6" onSubmit={handleCreate}> 
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Playlist Name</label>
               <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} name="name" id="name" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500" required />
@@ -127,9 +127,9 @@ export const Playlists = () => {
               <label htmlFor="visibility" className="ml-1 text-sm font-medium text-gray-700">Public</label>
             </div>
 
-            <div className="flex justify-center"> {/* Centered buttons for a cleaner look */}
-              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> {/* Enhanced button styling */}
-              <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> {/* Enhanced button styling */}
+            <div className="flex justify-center"> 
+              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button> 
+              <button onClick={() => setShowPopup(false)} className="ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</button> 
             </div>
           </form>
         </div>

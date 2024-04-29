@@ -8,7 +8,7 @@ export const Artists = () => {
 
   useEffect(() => {
     fetchArtists();
-  }, [page]); // Fetch artists whenever the page changes
+  }, [page]); 
 
   const fetchArtists = async () => {
     try {
