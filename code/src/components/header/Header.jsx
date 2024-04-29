@@ -59,7 +59,7 @@ export const Header = () => {
             </Link>
           </div>
           <Link to="/">
-            <h2 className='text-2xl font-semibold ml-3'>BeatFlow</h2>
+            <h2 className='text-2xl font-semibold ml-3 m-1.5'>BeatFlow</h2>
           </Link>
         </div>
 

@@ -7,6 +7,7 @@ export const Playlists = () => {
   const [playlists, setPlaylists] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
+  const loggedIn = localStorage.getItem('isLoggedIn');
 
   useEffect(() => {
     fetchPlaylists();
@@ -72,7 +73,9 @@ export const Playlists = () => {
       <section className="hero mt-8 sm:mt-20">
         <div className="flex justify-between items-center mb-4">
         <h1 className="text-5xl font-bold mb-5 text-primary">Public playlists</h1>
-        <button className="bg-primary text-white px-4 p-1.5 rounded-full" onClick={handleShowPopup}>Create your own Playlist</button>
+        {loggedIn === 'true' &&
+          <button className="bg-primary text-white px-4 p-1.5 rounded-full" onClick={handleShowPopup}>Create your own Playlist</button>
+        }
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {playlists.map((playlist, i) => (

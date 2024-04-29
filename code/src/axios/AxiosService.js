@@ -184,6 +184,10 @@ const ApiService = {
     return apiClient.post(`/api/Playlist/${playlistId}/add-song/${songId}`);
   },
 
+  addNewAlbum(data) {
+    return apiClient.post(`/api/Album/Register`, data);
+  },
+
 };
 
 export default ApiService;
